@@ -1,0 +1,2 @@
+module GenerateApiHelper
+end
