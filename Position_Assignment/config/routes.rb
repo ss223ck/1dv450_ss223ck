@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'generate_api#index'
+  resources :users
 
-  resource :generate_api
+  post "login" => "users#login", as: :login
+  get "logout" => "users#logout", as: :logout
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

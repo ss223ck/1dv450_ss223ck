@@ -1,0 +1,33 @@
+
+<% if @user.errors.any? %>
+    <div class="error_messages">
+
+      <% @user.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+<% end %>
+
+<%= form_for @user do |u| %>
+    <div>
+      <%= u.label :user_name %>
+      <%= u.text_field :user_name %>
+    </div>
+    <div>
+      <%= u.label :email %>
+      <%= u.email_field :email %>
+    </div>
+    <div>
+      <%= u.label :password %>
+      <%= u.password_field :password %>
+    </div>
+    <div>
+      <%= u.label :password_confirmation %>
+      <%= u.password_field :password_confirmation %>
+    </div>
+    <div>
+      <%= u.submit "Skapa användare" %>
+    </div>
+<% end %>
+
+<%= link_to "Tillbaka", users_path %>
