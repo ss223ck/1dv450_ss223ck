@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   def index
-    @user = User.new
+
   end
 
   def new
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:userid] = @user.id
-      redirect_to "/users/"
+      redirect_to users_path
     else
       render :action => "new"
     end
@@ -22,11 +22,24 @@ class UsersController < ApplicationController
   end
 
   def login
-
+    user = User.find_by_user_name(params[:user_name])
+    if user && user.authenticate(params[:password])
+      session[:userid] = user.id;
+      redirect_to creators_path
+    else
+      flash[:error] = "Username or password is wrong"
+      redirect_to users_path
+    end
   end
 
   def logout
-    
+    if session[:userid]
+      session[:userid] = nil
+      redirect_to users_path
+    else
+      redirect_to users_path
+    end
+
   end
 
   private

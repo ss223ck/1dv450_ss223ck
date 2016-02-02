@@ -4,9 +4,15 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   resources :users
+  resources :creators
 
   post "login" => "users#login", as: :login
   get "logout" => "users#logout", as: :logout
+
+  get "/creators/:id" => "creators#destroy", as: :apidestroy
+
+  #get "apikeys" => "apikeys#index", as: :apikey
+  #get "apikeys" => "apikeys#index", as: :apikey
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

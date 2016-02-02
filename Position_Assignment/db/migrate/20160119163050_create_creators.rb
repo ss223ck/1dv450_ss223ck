@@ -5,7 +5,7 @@ class CreateCreators < ActiveRecord::Migration
 
       t.string "applikation_name", :limit => 30
       t.string "applikation_api"
-
+      t.string "applikation_decription"
 
       t.timestamps
     end

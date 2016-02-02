@@ -1,0 +1,26 @@
+<h1>Skapa ny api-nyckel</h1>
+
+<% if @creator.errors.any? %>
+    <div class="error_messages">
+
+      <% @creator.errors.full_messages.each do |message| %>
+          <p><%= message %></p>
+      <% end %>
+    </div>
+<% end %>
+
+<%= form_for @creator do |c| %>
+    <div>
+      <%= c.label :applikation_name %>
+      <%= c.text_field :applikation_name %>
+    </div>
+    <div>
+      <%= c.label :applikation_decription %>
+      <%= c.text_area :applikation_decription %>
+    </div>
+    <div>
+      <%= c.submit "Skapa api-nyckel" %>
+    </div>
+<% end %>
+
+<%= link_to "Tillbaka", creators_path %>
