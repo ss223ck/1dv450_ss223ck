@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+body{
+    padding:20px;
+}
+.keysWrapper{
+    padding:20px;
+    max-width: 500px;
+    border-top: 1px solid black;
+}
+.informationGroup{
+
+}

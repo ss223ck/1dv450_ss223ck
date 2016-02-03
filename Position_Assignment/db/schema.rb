@@ -15,9 +15,9 @@ ActiveRecord::Schema.define(version: 20160131151109) do
 
   create_table "creators", force: true do |t|
     t.integer  "user_id"
-    t.string   "applikation_name",       limit: 30
+    t.string   "applikation_name",        limit: 30
     t.string   "applikation_api"
-    t.string   "applikation_decription"
+    t.string   "applikation_description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

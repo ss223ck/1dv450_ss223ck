@@ -1,26 +1,31 @@
 <h1>Welcome to your specifik api key page</h1>
 
-<div class="keysWrapper">
-  <% @creator.each do |c| %>
+
+<% @creator.each do |c| %>
+  <div class="keysWrapper">
     <div class="specifikKeyWrapper">
       <div class="informationGroup">
         <h3><%= c.applikation_name %></h3>
       </div>
       <div class="informationGroup">
         <p>Beskrivning av applikationen: </p>
-        <p><%= c.applikation_decription %></p>
+        <p><%= c.applikation_description %></p>
       </div>
       <div class="informationGroup">
         <p>Applikationens nyckel: </p>
         <p><%= c.applikation_api %></p>
       </div>
       <div class="informationGroup">
-        <%= link_to "Ta bort applikationen", c, apidestroy_url%>
+        <%= link_to "Ta bort", { action: :destroy, id: c.id }, method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
     </div>
-  <% end %>
+  </div>
+<% end %>
+
+
+<div>
+  <%= link_to "Skapa ny api-nyckel", new_creator_path %>
 </div>
-
-
-<%= link_to "skapa ny api-nyckel", new_creator_path %>
-<%= link_to "logga ut", logout_path %>
+<div>
+  <%= link_to "Logga ut", logout_path %>
+</div>

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post "login" => "users#login", as: :login
   get "logout" => "users#logout", as: :logout
 
-  get "/creators/:id" => "creators#destroy", as: :apidestroy
+  get "/creators/:id" => "creators#destroy", as: :destroy_creator
 
   #get "apikeys" => "apikeys#index", as: :apikey
   #get "apikeys" => "apikeys#index", as: :apikey

@@ -7,13 +7,13 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:userid]) if session[:userid]
   end
 
-  def check_valid_autentication
+  def check_valid_authentication
     if current_user.nil? then
       flash[:error] = "Du måste vara inloggad"
       redirect_to users_path
     end
   end
-  def check_if_admin_autentication
+  def check_if_admin_authentication
     current_user.is_admin == 1
   end
 end

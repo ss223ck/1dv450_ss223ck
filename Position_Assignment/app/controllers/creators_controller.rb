@@ -1,10 +1,10 @@
 class CreatorsController < ApplicationController
-  before_action :check_valid_autentication
+  before_action :check_valid_authentication
 
   def index
     @user = User.find(session[:userid])
     puts @user
-    if (@user.is_admin == 1)
+    if check_if_admin_authentication
       @creator = Creator.all
     else
       @creator = Creator.where(user_id: session[:userid])
@@ -34,13 +34,20 @@ class CreatorsController < ApplicationController
   end
 
   def destroy
+    @creator = Creator.find(params[:id])
+    if @creator.destroy
+      flash[:success] = "Du tog bort applikationen"
+    else
+      flash[:error] = "Något gick fel när applikationen skulle tas bort"
+    end
     redirect_to creators_path
+
   end
 
   private
 
   def get_creator_post_variables
-    params.require(:creator).permit(:applikation_name, :applikation_decription)
+    params.require(:creator).permit(:applikation_name, :applikation_description)
   end
 
 
