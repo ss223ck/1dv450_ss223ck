@@ -1,28 +1,7 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+1. Gå till applikationsroten i konsolen. Skriv rake db:migrate
+2. Starta applikationen. Skriv rails s
+3. Testa systemet genom att lägga till användare och applikationer.
+4. För att få administratörsrättigheter måste du gå in i databasen och ange is_admin till 1 under tabellen Users.
+5. När man är admin listas alla applikationer när man är inloggad och är under "http://localhost:3000/creators"
