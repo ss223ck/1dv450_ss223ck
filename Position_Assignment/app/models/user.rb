@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-
+  has_many :creators
   has_secure_password
 
   validates :user_name,

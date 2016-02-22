@@ -14,6 +14,6 @@ class ApplicationController < ActionController::Base
     end
   end
   def check_if_admin_authentication
-    current_user.is_admin == 1
+    current_user.is_admin
   end
 end

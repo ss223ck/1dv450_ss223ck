@@ -9,25 +9,27 @@
 <% end %>
 
 <%= form_for @user do |u| %>
-    <div>
-      <%= u.label :user_name %>
-      <%= u.text_field :user_name %>
-    </div>
-    <div>
-      <%= u.label :email %>
-      <%= u.email_field :email %>
-    </div>
-    <div>
-      <%= u.label :password %>
-      <%= u.password_field :password %>
-    </div>
-    <div>
-      <%= u.label :password_confirmation %>
-      <%= u.password_field :password_confirmation %>
-    </div>
-    <div>
-      <%= u.submit "Skapa användare" %>
+
+    <div class="biggerformwrapper">
+      <div class="informationGroup">
+        <%= u.label :user_name %>
+        <%= u.text_field :user_name, :class => "information-field" %>
+      </div>
+      <div class="informationGroup">
+        <%= u.label :email %>
+        <%= u.email_field :email, :class => "information-field"  %>
+      </div>
+      <div class="informationGroup">
+        <%= u.label :password %>
+        <%= u.password_field :password, :class => "information-field"  %>
+      </div>
+      <div class="informationGroup">
+        <%= u.label :password_confirmation %>
+        <%= u.password_field :password_confirmation, :class => "information-field"  %>
+      </div>
+      <div class="informationGroup">
+        <%= u.submit "Skapa användare" %>
+      </div>
+      <%= link_to "Tillbaka", users_path %>
     </div>
 <% end %>
-
-<%= link_to "Tillbaka", users_path %>

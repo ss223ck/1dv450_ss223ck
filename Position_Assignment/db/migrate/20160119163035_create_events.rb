@@ -5,7 +5,7 @@ class CreateEvents < ActiveRecord::Migration
       t.references :position
       t.references :creator
       t.references :create_events_tags_table
-      t.string "Description"
+      t.string :description
 
       t.timestamps
     end

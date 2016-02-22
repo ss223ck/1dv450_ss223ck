@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20160131151109) do
     t.integer  "position_id"
     t.integer  "creator_id"
     t.integer  "create_events_tags_table_id"
-    t.string   "Description"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160131151109) do
   add_index "events_tags", ["event_id", "tag_id"], name: "index_events_tags_on_event_id_and_tag_id"
 
   create_table "positions", force: true do |t|
+    t.string   "location_name"
     t.float    "longitude"
     t.float    "latitude"
     t.datetime "created_at"
@@ -47,7 +48,7 @@ ActiveRecord::Schema.define(version: 20160131151109) do
 
   create_table "tags", force: true do |t|
     t.integer  "create_events_tags_table_id"
-    t.string   "name",                        limit: 20
+    t.string   "name",                        limit: 40
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -56,7 +57,7 @@ ActiveRecord::Schema.define(version: 20160131151109) do
     t.string   "user_name"
     t.string   "password_digest"
     t.string   "email"
-    t.integer  "is_admin",        null: false
+    t.boolean  "is_admin",        default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
