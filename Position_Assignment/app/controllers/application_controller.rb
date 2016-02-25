@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
       redirect_to users_path
     end
   end
+
   def check_if_admin_authentication
     current_user.is_admin
   end

@@ -6,42 +6,60 @@ module Api
       skip_before_filter  :verify_authenticity_token
 
       def index
-        respond_with Event.order('events.created_at DESC').all
+        @event = Event.order('events.created_at DESC').all
+
+        if (params[:offset] && params[:limit])
+          @event = @event.page(1).per(params[:limit]).padding(params[:offset])
+        else
+          @event = @event.page(1).per(25)
+        end
+
+        render json: @event, status: 200
       end
 
       def show
         respond_with Event.find(params[:id])
       end
 
+      def show_nearby_events
+        if (params[:location_name].prensent?)
+          Position.near(params[:location_name], 10).events
+        else
+          render json: '{ "error": "You must send a location name" }', status:500
+        end
+
+      end
+
       def create
+
         @event = Event.new(get_event_post_variables)
 
-        #@event << Tag.find(params[:tag_id])
+        @event.tags << Tag.find(params[:tag_id]) if params[:tag_id]
 
         if @event.save
-          respond_with status: 201
+          render json: @event, status: :created
         else
-          respond_with status: 500
+          render json: @event.errors, status: :unprocessable_entity
         end
       end
 
       def update
-        @event = Event.find(get_event_post_variables[:id])
-        @event << Tag.find(params[:tag_id])
+        @event = Event.find(params[:id])
+        @event.tags << Tag.find(params[:tag_id])
 
         if @event.save
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          render json: @event.errors, status: 422
         end
       end
 
       def destroy
         @event = Events.find(params[:id])
         if @event.destroy && Event.find(:id).Create_events_tags_table.destroy
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          head status: 500
         end
       end
 
@@ -57,8 +75,13 @@ module Api
       end
 
       def get_event_post_variables
-        params.require(:event).permit(:position_id, :creator_id, :description)
+        if params[:position_id].present? && params[:creator_id].present? && params[:description].present?
+          params.require(:event).permit(:position_id, :creator_id, :description)
+        else
+          render json: '{"error": "You need to send correct parameters"}', status: 403
+        end
       end
+
     end
   end
 end

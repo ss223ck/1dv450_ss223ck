@@ -14,32 +14,30 @@ module Api
 
       def create
         @position = Position.new(get_position_post_variables)
-        #@position << Tag.find(params[:id])
 
         if @position.save
-          respond_with status:200
+          render json: @position, status: :created
         else
-          respond_with status:500
+          render json: @position.errors, status: :unprocessable_entity
         end
       end
 
       def update
-        @position = Position.find(get_tag_post_variables[:id])
-        #@tag << Event.find(params[:event_id])
+        @position = Position.find(params[:id])
 
         if @position.save
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          render json: @position.errors, status: 422
         end
       end
 
       def destroy
         @position = Position.find(params[:id])
         if @position.destroy && Position.find(:id).Create_events_tags_table.destroy
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          head status: 500
         end
       end
 
@@ -55,7 +53,12 @@ module Api
       end
 
       def get_position_post_variables
-        params.require(:tag).permit(:name,:longitude, :latitude)
+        if params[:name].present? && params[:longitude].present? && params[:latitude].present?
+          params.require(:tag).permit(:name,:longitude, :latitude)
+        else
+          head status:400
+        end
+
       end
 
     end

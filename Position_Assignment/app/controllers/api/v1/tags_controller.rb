@@ -3,6 +3,7 @@ module Api
     class TagsController < ApplicationController
       respond_to :json
       before_filter :restrict_access
+      skip_before_filter  :verify_authenticity_token
 
       def index
         respond_with Tag.all
@@ -19,12 +20,10 @@ module Api
       def create
         @tag = Tag.new(get_tag_post_variables)
 
-        #@tag << Event.find(params[:event_id])
-
         if @tag.save
-          respond_with status: 201
+          render json: @tag, status: :created
         else
-          respond_with status: 500
+          render json: @event.errors, status: :unprocessable_entity
         end
       end
 
@@ -33,18 +32,18 @@ module Api
         #@tag << Event.find(params[:event_id])
 
         if @tag.save
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          render json: @tag.errors, status: 422
         end
       end
 
       def destroy
         @tag = Tag.find(params[:id])
         if @tag.destroy && Tag.find(:id).Create_events_tags_table.destroy
-          respond_with status: 200
+          head :no_content
         else
-          respond_with status: 500
+          head status: 500
         end
       end
 
@@ -60,7 +59,12 @@ module Api
       end
 
       def get_tag_post_variables
-        params.require(:tag).permit(:name)
+        if params[:name].present?
+          params.require(:tag).permit(:name)
+        else
+          render json: '{"error": "You need to send correct parameters"}', status: 403
+        end
+
       end
 
     end
