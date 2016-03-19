@@ -4,6 +4,7 @@ module Api
       respond_to :json
       before_filter :restrict_access
       skip_before_filter  :verify_authenticity_token
+      before_filter :get_offset_and_limit
 
       def index
 
@@ -12,15 +13,14 @@ module Api
           render json: @event, status: :ok
         else
           @event = Event.order('events.updated_at DESC').all
+          
+          @event = @event.page(1).per(@limit).padding(@offset)
+          @next_offset = @offset + @limit
+          @next_url = request.base_url + '/api/v1/events?limit=' + params[:limit] + '&offset=' + @next_offset.to_s
 
-          if (params[:offset] && params[:limit])
-            @event = @event.page(1).per(params[:limit]).padding(params[:offset])
-          else
-            @event = @event.page(1).per(25)
-          end
-          @response = '{ "nextPage":"' + request.base_url + '/api/v1/events?limit='+
-              params[:limit] +'&offset='+ (params[:offset].to_i + params[:limit].to_i) + '" }'
-          render json: @response, status: 200
+          @response2 = {next_url: @next_url,
+                        requested_events: @event}
+          render json: @response2, status: 200
         end
 
       end
@@ -90,6 +90,15 @@ module Api
           params.require(:event).permit(:position_id, :creator_id, :description)
         else
           render json: '{"error": "You need to send correct parameters"}', status: 403
+        end
+      end
+
+      def get_offset_and_limit
+        @offset = 0
+        @limit = 25
+        if params[:offset] && params[:limit]
+          @offset = params[:offset].to_i
+          @limit = params[:limit].to_i
         end
       end
 
