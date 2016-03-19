@@ -6,15 +6,24 @@ module Api
       skip_before_filter  :verify_authenticity_token
 
       def index
-        respond_with Tag.all
+        render json: Tag.all, status: :ok
       end
 
       def show
-        respond_with Tag.find(params[:id])
+        if Tag.exists?(params[:id])
+          render json: Tag.find(params[:id]), status: :ok
+        else
+          render json: '{"Error":"could not find specific tag"}', status: :not_found
+        end
+
       end
 
       def show_specific_event
-        respond_with Tag.find(params[:id]).events
+        if Tag.exists?(params[:id])
+          render json: Tag.find(params[:id]).events, status: :ok
+        else
+          render json: '{"Error":"Couldnt find events for specific tag"}', status: :not_found
+        end
       end
 
       def create
@@ -23,27 +32,35 @@ module Api
         if @tag.save
           render json: @tag, status: :created
         else
-          render json: @event.errors, status: :unprocessable_entity
+          render json: @tag.errors, status: :unprocessable_entity
         end
       end
 
       def update
-        @tag = Tag.find(get_tag_post_variables[:id])
-        #@tag << Event.find(params[:event_id])
 
-        if @tag.save
-          head :no_content
+        if Tag.exists?(params[:id])
+          @tag = Tag.find(params[:id])
+
+          if @tag.update_attributes(get_tag_post_variables)
+            render json: @tag, status: :ok
+          else
+            render json: @tag.errors, status: :unprocessable_entity
+          end
         else
-          render json: @tag.errors, status: 422
+          render json: '{"Error":"Could not find specific tag"}'
         end
       end
 
       def destroy
-        @tag = Tag.find(params[:id])
-        if @tag.destroy && Tag.find(:id).Create_events_tags_table.destroy
-          head :no_content
+        if Tag.exists?(params[:id])
+          @tag = Tag.find(params[:id])
+          if @tag.destroy && Tag.find(:id).Create_events_tags_table.destroy
+            render json: '{"Message":"Tag was deleted"}'
+          else
+            render json: @tag.errors, status: :unprocessable_entity
+          end
         else
-          head status: 500
+          render json: '{"Error":"Could not find specific tag"}'
         end
       end
 

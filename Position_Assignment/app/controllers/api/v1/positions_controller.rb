@@ -5,11 +5,16 @@ module Api
       before_filter :restrict_access
 
       def index
-        respond_with Position.all
+        render json: Position.all, status: :ok
       end
 
       def show
-        respond_with Position.find(params[:id])
+
+        if Position.exists?(params[:id])
+          render json: Position.find(params[:id])
+        else
+          render json: '{"Error":"Could not find the specific location"}', status: :not_foundt
+        end
       end
 
       def create
@@ -33,12 +38,17 @@ module Api
       end
 
       def destroy
-        @position = Position.find(params[:id])
-        if @position.destroy && Position.find(:id).Create_events_tags_table.destroy
-          head :no_content
+        if Position.exists?(params[:id])
+          @position = Position.find(params[:id])
+          if @position.destroy && Position.find(:id).Create_events_tags_table.destroy
+            render json: '{"Message":"Position was deleted"}', status: :ok
+          else
+            render json: @position.errors, status: :unprocessable_entity
+          end
         else
-          head status: 500
+          render json: '{"Error":"The specific position does not exist"}'
         end
+
       end
 
       private

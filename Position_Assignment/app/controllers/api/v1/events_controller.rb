@@ -6,28 +6,39 @@ module Api
       skip_before_filter  :verify_authenticity_token
 
       def index
-        @event = Event.order('events.created_at DESC').all
 
-        if (params[:offset] && params[:limit])
-          @event = @event.page(1).per(params[:limit]).padding(params[:offset])
+        if params[:search]
+          @event = Event.where("description like ?", "%#{params[:search]}%")
+          render json: @event, status: :ok
         else
-          @event = @event.page(1).per(25)
+          @event = Event.order('events.updated_at DESC').all
+
+          if (params[:offset] && params[:limit])
+            @event = @event.page(1).per(params[:limit]).padding(params[:offset])
+          else
+            @event = @event.page(1).per(25)
+          end
+          @response = '{ "nextPage":"' + request.base_url + '/api/v1/events?limit='+
+              params[:limit] +'&offset='+ (params[:offset].to_i + params[:limit].to_i) + '" }'
+          render json: @response, status: 200
         end
 
-        render json: @event, status: 200
       end
 
       def show
-        respond_with Event.find(params[:id])
+        if Event.exists?(params[:id])
+          render json: Event.find(params[:id]), status: :ok
+        else
+          render json: '{"Error":"Could not find the specific event"}'
+        end
       end
 
       def show_nearby_events
-        if (params[:location_name].prensent?)
-          Position.near(params[:location_name], 10).events
+        if params[:location_name].prensent?
+          render json: Position.near(params[:location_name], 10).events, status: :ok
         else
           render json: '{ "error": "You must send a location name" }', status:500
         end
-
       end
 
       def create
@@ -75,7 +86,7 @@ module Api
       end
 
       def get_event_post_variables
-        if params[:position_id].present? && params[:creator_id].present? && params[:description].present?
+        if params[:position_id].+ && params[:creator_id].present? && params[:description].present?
           params.require(:event).permit(:position_id, :creator_id, :description)
         else
           render json: '{"error": "You need to send correct parameters"}', status: 403
