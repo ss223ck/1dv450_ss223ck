@@ -4,9 +4,18 @@ module Api
       respond_to :json
       before_filter :restrict_access
       skip_before_filter  :verify_authenticity_token
+      before_filter :get_offset_and_limit
 
       def index
-        render json: Tag.all, status: :ok
+        @tag = Tag.all
+
+        @tag = @tag.page(1).per(@limit).padding(@offset)
+        @next_offset = @offset + @limit
+        @next_url = request.base_url + '/api/v1/tags?limit=' + params[:limit] + '&offset=' + @next_offset.to_s
+
+        @response = {next_url: @next_url,
+                     requested_tags: @tag}
+        render json: @response, status: 200
       end
 
       def show
@@ -65,23 +74,13 @@ module Api
       end
 
       private
-      #def restrict_access
-      #  api_key = Creator.find_by_applikation_api(params[:access_token])
-      #  head :unauthorized unless api_key
-      #end
-      def restrict_access
-        authenticate_or_request_with_http_token do |token, options|
-          Creator.exists?(applikation_api: token)
-        end
-      end
 
       def get_tag_post_variables
         if params[:name].present?
           params.require(:tag).permit(:name)
         else
-          render json: '{"error": "You need to send correct parameters"}', status: 403
+          render json: '{"error": "You need to send correct parameters"}', status: :unprocessable_entity
         end
-
       end
 
     end

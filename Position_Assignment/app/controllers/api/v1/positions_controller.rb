@@ -3,9 +3,22 @@ module Api
     class PositionsController < ApplicationController
       respond_to :json
       before_filter :restrict_access
+      before_filter :get_offset_and_limit
+      skip_before_filter  :verify_authenticity_token
 
       def index
-        render json: Position.all, status: :ok
+
+        @position = Position.all
+
+        @position = @position.page(1).per(@limit).padding(@offset)
+        @next_offset = @offset + @limit
+        @next_url = request.base_url + '/api/v1/tags?limit=' + params[:limit] + '&offset=' + @next_offset.to_s
+
+        @response = {next_url: @next_url,
+                     requested_position: @position}
+        render json: @response, status: 200
+
+
       end
 
       def show
@@ -52,23 +65,13 @@ module Api
       end
 
       private
-      #def restrict_access
-      #  api_key = Creator.find_by_applikation_api(params[:access_token])
-      #  head :unauthorized unless api_key
-      #end
-      def restrict_access
-        authenticate_or_request_with_http_token do |token, options|
-          Creator.exists?(applikation_api: token)
-        end
-      end
 
       def get_position_post_variables
         if params[:name].present? && params[:longitude].present? && params[:latitude].present?
           params.require(:tag).permit(:name,:longitude, :latitude)
         else
-          head status:400
+          render json: '{"Error":"You need to post the right parameters"}', status: :unprocessable_entity
         end
-
       end
 
     end

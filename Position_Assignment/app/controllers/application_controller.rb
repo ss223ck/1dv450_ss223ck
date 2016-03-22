@@ -17,4 +17,23 @@ class ApplicationController < ActionController::Base
   def check_if_admin_authentication
     current_user.is_admin
   end
+
+  def get_offset_and_limit
+    @offset = 0
+    @limit = 25
+    if params[:offset] && params[:limit]
+      @offset = params[:offset].to_i
+      @limit = params[:limit].to_i
+    end
+  end
+
+  def authenticate_authorise_creator
+
+  end
+
+  def restrict_access
+    authenticate_or_request_with_http_token do |token, options|
+      Creator.exists?(applikation_api: token)
+    end
+  end
 end
