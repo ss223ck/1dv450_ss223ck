@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
+      get "events/nearby/" => "events#show_nearby_events"
       resources :events
       resources :positions
-      resources :tags
       get "tag/specific" => "tags#show_specific_event"
+      resources :tags
     end
   end
   root "users#index"

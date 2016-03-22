@@ -21,14 +21,12 @@ class ApplicationController < ActionController::Base
   def get_offset_and_limit
     @offset = 0
     @limit = 25
-    if params[:offset] && params[:limit]
+    if params[:offset]
       @offset = params[:offset].to_i
+    end
+    if params[:limit]
       @limit = params[:limit].to_i
     end
-  end
-
-  def authenticate_authorise_creator
-
   end
 
   def restrict_access

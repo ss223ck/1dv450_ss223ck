@@ -5,7 +5,6 @@ module Api
       before_filter :restrict_access
       skip_before_filter  :verify_authenticity_token
       before_filter :get_offset_and_limit
-      before_filter :authenticate_authorise_creator, only: [:create, :update, :destroy]
 
       def index
         if params[:search]
@@ -16,7 +15,7 @@ module Api
 
           @event = @event.page(1).per(@limit).padding(@offset)
           @next_offset = @offset + @limit
-          @next_url = request.base_url + '/api/v1/events?limit=' + params[:limit] + '&offset=' + @next_offset.to_s
+          @next_url = request.base_url + '/api/v1/events?limit=' + @limit.to_s + '&offset=' + @next_offset.to_s
 
           @response = {next_url: @next_url,
                         requested_events: @event}
@@ -34,14 +33,19 @@ module Api
 
       def show_nearby_events
         if params[:location_name].present?
-          render json: Position.near(params[:location_name], 10).events, status: :ok
+          @nearby_events = []
+          @nearby_positions = Position.near(params[:location_name], 100000000000000)
+          @nearby_positions.each do |position|
+            @nearby_events.push(Event.find_by(position.id))
+          end
+          render json: @nearby_events, status: :ok
         else
           render json: '{ "error": "You must send a location name" }', status: :unprocessable_entity
         end
       end
 
       def create
-        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: params[:application_api_key])
+        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
           @event = Event.new(get_event_post_variables)
 
           if get_body_post_variables[:tags].present?
@@ -70,12 +74,12 @@ module Api
             render json: @event.errors, status: :unprocessable_entity
           end
         else
-          render json: '{"Error":"You are not owner of this resource"}'
+          render json: '{"Error":"You are not owner of this resource"}', status: :unauthorized
         end
       end
 
       def update
-        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: params[:application_api_key])
+        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
           @event = Event.find(params[:id])
 
           if get_body_post_variables[:tags].present?
@@ -104,12 +108,12 @@ module Api
             render json: @event.errors, status: 422
           end
         else
-          render json: '{"Error":"You are not owner of this resource"}'
+          render json: '{"Error":"You are not owner of this resource"}', status: :unauthorized
         end
       end
 
       def destroy
-        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: params[:application_api_key])
+        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
           @event = Events.find(params[:id])
           if @event.destroy && Event.find(:id).Create_events_tags_table.destroy
             render json: '{"Message":"You removed the specific event"}', status: :ok
@@ -117,7 +121,7 @@ module Api
             render json: '{"Error":"Could not remove specific event"}', status: :unprocessable_entity
           end
         else
-          render json: '{"Error":"You are not the owner of this resource"}', status: :unprocessable_entity
+          render json: '{"Error":"You are not the owner of this resource"}', status: :unauthorized
         end
       end
 
@@ -128,8 +132,11 @@ module Api
       end
 
       def get_body_post_variables
+        params.permit(position:[:location_name, :longitude, :latitude], tags:[:name])
+      end
 
-        @return_parameters = params.permit(position:[:location_name, :longitude, :latitude], tags:[:name])
+      def get_api_key
+        params.permit(:application_api_key)
       end
     end
   end
