@@ -34,9 +34,12 @@ module Api
       def show_nearby_events
         if params[:location_name].present?
           @nearby_events = []
-          @nearby_positions = Position.near(params[:location_name], 100000000000000)
+          @nearby_positions = Position.near(params[:location_name], 20)
           @nearby_positions.each do |position|
-            @nearby_events.push(Event.find_by(position.id))
+            if Event.find_by_position_id(position.id).present?
+              @nearby_events.push(Event.find_by_position_id(position.id))
+            end
+
           end
           render json: @nearby_events, status: :ok
         else
