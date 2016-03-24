@@ -48,37 +48,37 @@ module Api
       end
 
       def create
-        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
-          @event = Event.new(get_event_post_variables)
 
-          if get_body_post_variables[:tags].present?
+        @event = Event.new(get_event_post_variables)
 
-            get_body_post_variables[:tags].each do |tag|
+        if get_body_post_variables[:tags].present?
 
-              if Tag.exists?(tag)
-                @event.tags << Tag.find_by(tag)
-              else
-                @event.tags << Tag.create(tag)
-              end
-            end
-          end
+          get_body_post_variables[:tags].each do |tag|
 
-          if get_body_post_variables[:position].present?
-            if Position.exists?(get_body_post_variables[:position])
-              @event.position = Position.find_by(get_body_post_variables[:position])
+            if Tag.exists?(tag)
+              @event.tags << Tag.find_by(tag)
             else
-              @event.position = Position.create(get_body_post_variables[:position])
+              @event.tags << Tag.create(tag)
             end
           end
-
-          if @event.save
-            render json: @event, status: :created
-          else
-            render json: @event.errors, status: :unprocessable_entity
-          end
-        else
-          render json: '{"Error":"You are not owner of this resource"}', status: :unauthorized
         end
+
+        if get_body_post_variables[:position].present?
+          if Position.exists?(get_body_post_variables[:position])
+            @event.position = Position.find_by(get_body_post_variables[:position])
+          else
+            @event.position = Position.create(get_body_post_variables[:position])
+          end
+        end
+
+        if @event.save
+          render json: @event, status: :created
+        else
+          render json: @event.errors, status: :unprocessable_entity
+        end
+      else
+        render json: '{"Error":"You are not owner of this resource"}', status: :unauthorized
+
       end
 
       def update
