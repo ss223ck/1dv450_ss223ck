@@ -34,3 +34,5 @@ gem "geocoder"
 gem "json"
 
 gem "kaminari"
+
+gem 'rack-cors', :require => 'rack/cors'

@@ -48,36 +48,37 @@ module Api
       end
 
       def create
-
-        @event = Event.new(get_event_post_variables)
-
-        if get_body_post_variables[:tags].present?
-
-          get_body_post_variables[:tags].each do |tag|
-
-            if Tag.exists?(tag)
-              @event.tags << Tag.find_by(tag)
-            else
-              @event.tags << Tag.create(tag)
+        if get_api_key[:application_api_key].present? || get_event_post_variables[:creator_id].present?
+          @event = Event.new(get_event_post_variables)
+          @this_creator = Creator.find_by(applikation_api: get_api_key[:application_api_key])
+          @event.creator_id = @this_creator.id
+          if get_body_post_variables[:tags].present?
+            get_body_post_variables[:tags].each do |tag|
+              if Tag.exists?(tag)
+                @event.tags << Tag.find_by(tag)
+              else
+                @event.tags << Tag.create(tag)
+              end
             end
           end
-        end
 
-        if get_body_post_variables[:position].present?
-          if Position.exists?(get_body_post_variables[:position])
-            @event.position = Position.find_by(get_body_post_variables[:position])
-          else
-            @event.position = Position.create(get_body_post_variables[:position])
+          if get_body_post_variables[:position].present?
+            if Position.exists?(get_body_post_variables[:position])
+              @event.position = Position.find_by(get_body_post_variables[:position])
+            else
+              @event.position = Position.create(get_body_post_variables[:position])
+            end
           end
+
+          if @event.save
+            render json: @event, status: :created
+          else
+            render json: @event.errors, status: :unprocessable_entity
+          end
+        else
+          render json: '{"Error":"You need to send application key or creator id in request"}', status: :unprocessable_entity
         end
 
-        if @event.save
-          render json: @event, status: :created
-        else
-          render json: @event.errors, status: :unprocessable_entity
-        end
-      else
-        render json: '{"Error":"You are not owner of this resource"}', status: :unauthorized
 
       end
 
@@ -86,9 +87,7 @@ module Api
           @event = Event.find(params[:id])
 
           if get_body_post_variables[:tags].present?
-
             get_body_post_variables[:tags].each do |tag|
-
               if Tag.exists?(tag)
                 @event.tags << Tag.find_by(tag)
               else
@@ -116,15 +115,20 @@ module Api
       end
 
       def destroy
-        if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
-          @event = Events.find(params[:id])
-          if @event.destroy && Event.find(:id).Create_events_tags_table.destroy
-            render json: '{"Message":"You removed the specific event"}', status: :ok
+        if Event.exists?(params[:id])
+          if Event.find(params[:id]).creator == Creator.find_by(applikation_api: get_api_key[:application_api_key])
+            @event = Event.find(params[:id])
+
+            if @event.destroy
+              render json: '{"Message":"You removed the specific event"}', status: :ok
+            else
+              render json: '{"Error":"Could not remove specific event"}', status: :unprocessable_entity
+            end
           else
-            render json: '{"Error":"Could not remove specific event"}', status: :unprocessable_entity
+            render json: '{"Error":"You are not the owner of this resource"}', status: :unauthorized
           end
         else
-          render json: '{"Error":"You are not the owner of this resource"}', status: :unauthorized
+          render json: '{"Error":"The event does not exist"}', status: :unauthorized
         end
       end
 

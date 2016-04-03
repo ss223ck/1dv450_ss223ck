@@ -11,7 +11,7 @@ module Api
 
         @tag = @tag.page(1).per(@limit).padding(@offset)
         @next_offset = @offset + @limit
-        @next_url = request.base_url + '/api/v1/tags?limit=' + params[:limit] + '&offset=' + @next_offset.to_s
+        @next_url = request.base_url + '/api/v1/tags?limit=' + @limit.to_s + '&offset=' + @next_offset.to_s
 
         @response = {next_url: @next_url,
                      requested_tags: @tag}
@@ -36,34 +36,43 @@ module Api
       end
 
       def create
-        @tag = Tag.new(get_tag_post_variables)
+        if get_tag_post_variables[:name].present?
+          @tag = Tag.new(get_tag_post_variables)
 
-        if @tag.save
-          render json: @tag, status: :created
+          if @tag.save
+            render json: @tag, status: :created
+          else
+            render json: @tag.errors, status: :unprocessable_entity
+          end
         else
-          render json: @tag.errors, status: :unprocessable_entity
+          render json: '{"Error":"You have to have a name for your tag"}', status: :unprocessable_entity
         end
+
       end
 
       def update
 
         if Tag.exists?(params[:id])
-          @tag = Tag.find(params[:id])
+          if get_tag_post_variables[:name].present?
+            @tag = Tag.find(params[:id])
 
-          if @tag.update_attributes(get_tag_post_variables)
-            render json: @tag, status: :ok
+            if @tag.update_attributes(get_tag_post_variables)
+              render json: @tag, status: :ok
+            else
+              render json: @tag.errors, status: :unprocessable_entity
+            end
           else
-            render json: @tag.errors, status: :unprocessable_entity
+            render json: '{"Error":"You have to have a name for your tag"}', status: :unprocessable_entity
           end
         else
-          render json: '{"Error":"Could not find specific tag"}'
+          render json: '{"Error":"Could not find specific tag"}', status: :unprocessable_entity
         end
       end
 
       def destroy
         if Tag.exists?(params[:id])
           @tag = Tag.find(params[:id])
-          if @tag.destroy && Tag.find(:id).Create_events_tags_table.destroy
+          if @tag.destroy
             render json: '{"Message":"Tag was deleted"}'
           else
             render json: @tag.errors, status: :unprocessable_entity
@@ -76,11 +85,7 @@ module Api
       private
 
       def get_tag_post_variables
-        if params[:name].present?
-          params.require(:tag).permit(:name)
-        else
-          render json: '{"error": "You need to send correct parameters"}', status: :unprocessable_entity
-        end
+        params.require(:tag).permit(:name)
       end
 
     end
