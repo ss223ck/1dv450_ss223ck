@@ -1,0 +1,9 @@
+<div>
+    <ul>
+        <li data-ng-repeat="position in positions">
+            {{position.location_name}}
+            <a href="#/update_position?id={{position.id}}">Updatera positionen</a>
+            <a href="#/show_specific_position?id={{position.id}}">Visa detaljer</a>
+        </li>
+    </ul>
+</div>

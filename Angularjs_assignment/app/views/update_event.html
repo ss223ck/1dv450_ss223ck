@@ -1,0 +1,13 @@
+<div>
+    <p>Ange beskrivning på eventet</p>
+    <input type="text" data-ng-model="event.description" ng-init="event.description=''" />
+    <p>Ange position:</p>
+    <div>
+        <select data-ng-model="event.position_id">
+            <option data-ng-repeat="position in positions" value="{{position.id}}">
+                {{position.location_name}}
+            </option>
+        </select>
+    </div>
+    <input type="submit" data-ng-click="UpdateEvent()"/>
+</div>
