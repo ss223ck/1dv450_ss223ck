@@ -12,6 +12,11 @@ var demoApp = angular.module('demoApp', ["ngResource", "ngRoute"])
                     controller: 'EventControllerSpecific',
                     templateUrl: 'app/views/show_specific_event.html'
                 })
+            .when('/search_for_events',
+                {
+                    controller: 'EventControllerSearch',
+                    templateUrl: 'app/views/search_for_events.html'
+                })
             .when('/update_event',
                 {
                     controller: 'EventControllerUpdate',
@@ -55,6 +60,10 @@ var demoApp = angular.module('demoApp', ["ngResource", "ngRoute"])
                 controller: 'TagControllerUpdate',
                 templateUrl: 'app/views/update_tag.html'
             })
+            .when('/show_tag_events', {
+                controller: 'TagControllerConnectedEvents',
+                templateUrl: 'app/views/show_tag_events.html'
+            })
             .otherwise({ redirectTo: '/' });
     });
 
@@ -67,6 +76,10 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
         getSpecificEvent: function(id){
             var resource = $resource("http://localhost:3000/api/v1/events/:id", { id:"@id"});
             return resource.get({id: id}).$promise;
+        },
+        searchSpecificEvent: function(searchTerm){
+            var resource = $resource("http://localhost:3000/api/v1/events/?search=:search", { search:"@search"});
+            return resource.get({search: searchTerm}).$promise;
         },
         createEvent: function(eventObject){
             var event = $resource("http://localhost:3000/api/v1/events/:id", { id:"@id"});
@@ -154,6 +167,11 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
                 tag.name = tagObject.name;
                 tag.$save();
             });
+        },
+        showTagEvents: function(tagObjectId){
+            var Tag = $resource("http://localhost:3000/api/v1/tags/specific/?id=:tagId", { tagId:"@id"});
+
+            return Tag.get({tagId:tagObjectId}).$promise;
         }
     }
     return event_calls;
@@ -166,7 +184,14 @@ demoApp.controller('EventController', ["$scope", "ApiFactory", function($scope, 
 
     function getAllEvents() {
         api.getAllEvents().then(function(data){
+
             $scope.events = data.requested_events;
+
+            data.requested_events.forEach(function(event){
+                functionrenderEvents(event);
+
+
+            })
         });
     };
 
@@ -238,6 +263,19 @@ demoApp.controller('EventControllerSpecific', ["$scope", "ApiFactory", "$locatio
             $scope.description = data.description;
             $scope.creator_id = data.creator_id;
             $scope.id = urlParameters.id;
+        });
+    };
+
+}]);
+
+demoApp.controller('EventControllerSearch', ["$scope", "ApiFactory", "$location", function($scope, api, $location){
+    var controller = {};
+
+    $scope.searchSpecificEvent = function (){
+        api.searchSpecificEvent($scope.searchTerm).then(function(data){
+            $scope.events = data.requested_events;
+        }).error(function(error){
+            var i = 0;
         });
     };
 
@@ -381,4 +419,27 @@ demoApp.controller('TagControllerUpdate', ["$scope", "ApiFactory","$location" , 
             errorTag.innerHTML = error.error;
         });
     };
+}]);
+
+demoApp.controller('TagControllerConnectedEvents', ["$scope", "ApiFactory","$location" , function($scope, api, $location){
+    var controller = {};
+
+
+    getSpecificTag();
+    getSpecificTagEvents();
+    function getSpecificTag(){
+        var urlParameters = $location.search();
+        api.getSpecificTags(urlParameters.id).then(function(data){
+            $scope.name = data.name;
+            $scope.id = urlParameters.id;
+        });
+    };
+    function getSpecificTagEvents(){
+        var urlParameters = $location.search();
+        api.showTagEvents(urlParameters.id).then(function(data){
+            $scope.events = data.requested_events;
+
+        });
+    };
+
 }]);

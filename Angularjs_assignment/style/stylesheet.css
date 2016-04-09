@@ -1,0 +1,13 @@
+#map {
+    height: 500px;
+    width: 500px;
+}
+.ng-scope{
+    margin-top: 50px;
+}
+#position{
+    border-radius: 3px;
+    padding:4px;
+    border: 1px solid black;
+    opacity: 0.5;
+}

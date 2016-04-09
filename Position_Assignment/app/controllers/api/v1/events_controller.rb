@@ -9,7 +9,7 @@ module Api
       def index
         if params[:search]
           @event = Event.where("description like ?", "%#{params[:search]}%")
-          render json: @event, status: :ok
+          render json: {requested_events: @event}, status: :ok
         else
           @event = Event.order('events.updated_at DESC').all
 

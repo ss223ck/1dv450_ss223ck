@@ -1,13 +1,28 @@
-<div>
-    <p>Ange beskrivning på eventet</p>
-    <input type="text" data-ng-model="event.description"/>
-    <p>Ange position:</p>
-    <div>
-        <select data-ng-model="event.position_id">
-            <option data-ng-repeat="position in positions" value="{{position.id}}">
-                {{position.location_name}}
-            </option>
-        </select>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="form-group">
+                <label for="description">
+                    Ange beskrivning på eventet
+                </label>
+                <input type="text" class="form-control" id="description" data-ng-model="event.description"/>
+            </div>
+            <div class="form-group">
+                <label for="position">
+                    Ange position:
+                </label>
+                <div>
+                    <select id="position" data-ng-model="event.position_id">
+                        <option data-ng-repeat="position in positions" value="{{position.id}}">
+                            {{position.location_name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" data-ng-click="CreateEvent()" value="Skicka"/>
+            </div>
+        </div>
     </div>
-    <input type="submit" data-ng-click="CreateEvent()"/>
 </div>

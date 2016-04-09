@@ -29,7 +29,7 @@ module Api
 
       def show_specific_event
         if Tag.exists?(params[:id])
-          render json: Tag.find(params[:id]).events, status: :ok
+          render json: {requested_events: Tag.find(params[:id]).events}, status: :ok
         else
           render json: '{"Error":"Couldnt find events for specific tag"}', status: :not_found
         end

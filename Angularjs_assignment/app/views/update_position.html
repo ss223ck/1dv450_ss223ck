@@ -1,9 +1,21 @@
-<div>
-    <p>Ange positionens namn:</p>
-    <input type="text" data-ng-model="position.location_name" ng-init="location_name=''" />
-    <p>Ange longitud:</p>
-    <input type="text" data-ng-model="position.longitude" ng-init="longitude=''" />
-    <p>Ange latitud</p>
-    <input type="text" data-ng-model="position.latitude" ng-init="latitude=''" />
-    <input type="submit" data-ng-click="UpdatePosition()"/>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="name">Ange positionens namn:</label>
+                <input type="text" id="name" class="form-control" data-ng-model="position.location_name" ng-init="location_name=''" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="longitude">Ange longitud:</label>
+            <input type="text" id="longitude" class="form-control" data-ng-model="position.longitude" ng-init="longitude=''" />
+        </div>
+        <div class="form-group">
+            <label for="latitude">Ange latitude:</label>
+            <input type="text" id="latitude" class="form-control" data-ng-model="position.latitude" ng-init="latitude=''" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-default" data-ng-click="UpdatePosition()"/>
+        </div>
+    </div>
 </div>

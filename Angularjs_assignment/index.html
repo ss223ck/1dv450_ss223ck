@@ -3,15 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="Scripts/google-maps.js" ></script>
     <script src="Scripts/angular.js"></script>
     <script src="Scripts/angular-route.js"></script>
     <script src="Scripts/angular-resource.js"></script>
     <script src="Scripts/jquery.min.js"></script>
 
-    <script src="Scripts/bootstrap.min.js"></script>
     <script src="app/controller/controller.js"></script>
+    <LINK href="style/bootstrap.css" rel="stylesheet" type="text/css">
+    <LINK href="style/stylesheet.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-brand">
+                Hitta Dina Event
+            </div>
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <div class="collapse navbar-collapse navHeaderCollapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Events <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/">Visa alla event</a></li>
+                            <li><a href="#/create_event">Skapa event</a></li>
+                            <li><a href="#/search_for_events">Sök efter event</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Position <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/show_positions">Visa positioner</a></li>
+                            <li><a href="#/create_position">Skapa position</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Tags <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/show_tags">Visa tags</a></li>
+                            <li><a href="#/create_tag">Skapa tag</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <div>
         <p id="error_message"></p>
@@ -22,15 +62,15 @@
 
     <div data-ng-view=""></div>
 
-    <div id="navigation">
-        <a href="#/">Visa alla event</a>
-        <a href="#/create_event">Skapa event</a>
-        <a href="#/create_position">Skapa position</a>
-        <a href="#/create_tag">Skapa tag</a>
-        <a href="#/show_positions">Visa positioner</a>
-        <a href="#/show_tags">Visa tags</a>
-    </div>
+
     <script src="Scripts/angular-resource.js"></script>
     <script src="app/controller/controller.js"></script>
+    <script src="scripts/bootstrap.js"></script>
+    <div id="map"></div>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAez0UBVTT-gu5oNjpUmDK42WxmwOpV7xk&callback=initMap">
+    </script>
+
 </body>
 </html>

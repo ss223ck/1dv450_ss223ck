@@ -1,6 +1,13 @@
-<div>
-    <p>Ange taggens namn:</p>
-    <input type="text" data-ng-model="tag.name" ng-init="name=''" />
-
-    <input type="submit" data-ng-click="UpdateTag()"/>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="name">Ange taggens namn:</label>
+                <input type="text" class="form-control" data-ng-model="tag.name" ng-init="name=''" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" data-ng-click="UpdateTag()"/>
+            </div>
+        </div>
+    </div>
 </div>
