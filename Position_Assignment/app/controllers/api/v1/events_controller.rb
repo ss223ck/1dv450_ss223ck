@@ -2,7 +2,7 @@ module Api
   module V1
     class EventsController < ApplicationController
       respond_to :json
-      before_filter :restrict_access
+      before_filter :restrict_access, only: [:create, :update, :destroy]
       skip_before_filter  :verify_authenticity_token
       before_filter :get_offset_and_limit
 
@@ -22,7 +22,14 @@ module Api
           render json: @response, status: 200
         end
       end
-
+      def authenticate_creator
+        creator = Creator.find_by_applikation_name(params[:applikation_name])
+        if creator && creator.authenticate(params[:password])
+          render json: {application_api: creator.applikation_api}, status: :ok
+        else
+          render json: {error: "could not authenticate"}
+        end
+      end
       def show
         if Event.exists?(params[:id])
           render json: Event.find(params[:id]), status: :ok
@@ -30,7 +37,15 @@ module Api
           render json: '{"Error":"Could not find the specific event"}'
         end
       end
-
+      def show_events_for_creator
+        if get_api_key[:application_api_key].present?
+          @this_creator = Creator.find_by(applikation_api: get_api_key[:application_api_key])
+          @events = @this_creator.Events
+          render json: { requested_events: @events}, status: :ok
+        else
+          render json: '{"Error":"You have to send application key"}'
+        end
+      end
       def show_nearby_events
         if params[:location_name].present?
           @nearby_events = []

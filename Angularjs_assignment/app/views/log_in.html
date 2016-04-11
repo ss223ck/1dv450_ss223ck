@@ -1,5 +1,20 @@
-<div>
-    <div>
-        <label for=""
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="application_name">Ange ditt applikationsnamn</label>
+                <input type="text" class="form-control" id="application_name" data-ng-model="application_name"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Ange ditt password </label>
+                <input type="password" class="form-control" id="password" data-ng-model="password"/>
+
+
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" data-ng-click="LogIn()" value="Logga in"/>
+            </div>
+        </div>
+
     </div>
 </div>

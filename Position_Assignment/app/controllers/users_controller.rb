@@ -45,6 +45,6 @@ class UsersController < ApplicationController
   private
 
   def get_user_post_variables
-    params.require(:user).permit(:user_name, :password, :password_confirmation, :email)
+    params.require(:user).permit(:user_name, :email, :password, :password_confirmation )
   end
 end

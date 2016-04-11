@@ -41,7 +41,7 @@ class CreatorsController < ApplicationController
   private
 
   def get_creator_post_variables
-    params.require(:creator).permit(:applikation_name, :applikation_description)
+    params.require(:creator).permit(:applikation_name, :applikation_description, :password, :password_confirmation,)
   end
 
 

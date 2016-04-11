@@ -2,7 +2,7 @@ module Api
   module V1
     class TagsController < ApplicationController
       respond_to :json
-      before_filter :restrict_access
+      before_filter :restrict_access, only: [:create, :update, :destroy]
       skip_before_filter  :verify_authenticity_token
       before_filter :get_offset_and_limit
 

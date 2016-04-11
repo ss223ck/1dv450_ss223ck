@@ -1,8 +1,18 @@
-<div>
-    <p>Ange sökord:</p>
-    <input type="text" data-ng-model="searchTerm" />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="searchterm">Ange sökord:</label>
+                <input type="text" id="searchterm" class="form-control" data-ng-model="searchTerm" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" data-ng-click="searchSpecificEvent()"/>
+            </div>
+        </div>
+    </div>
 
-    <input type="submit" data-ng-click="searchSpecificEvent()"/>
+
+
     <div>
         <ul>
             <li data-ng-repeat="event in events">

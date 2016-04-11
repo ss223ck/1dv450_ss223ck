@@ -22,6 +22,14 @@
         <%= c.text_area :applikation_description, :class => "information-field" %>
       </div>
       <div class="informationGroup">
+        <%= c.label :password %>
+        <%= c.password_field :password, :class => "information-field"  %>
+      </div>
+      <div class="informationGroup">
+        <%= c.label :password_confirmation %>
+        <%= c.password_field :password_confirmation, :class => "information-field"  %>
+      </div>
+      <div class="informationGroup">
         <%= c.submit "Skapa api-nyckel" %>
       </div>
       <%= link_to "Tillbaka", creators_path %>

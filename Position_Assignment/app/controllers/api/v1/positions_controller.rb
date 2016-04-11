@@ -2,7 +2,7 @@ module Api
   module V1
     class PositionsController < ApplicationController
       respond_to :json
-      before_filter :restrict_access
+      before_filter :restrict_access, only: [:create, :update, :destroy]
       before_filter :get_offset_and_limit
       skip_before_filter  :verify_authenticity_token
 

@@ -1,6 +1,6 @@
 var demoApp = angular.module('demoApp', ["ngResource", "ngRoute"])
     .config(function($httpProvider, $routeProvider){
-        $httpProvider.defaults.headers.common['Authorization'] = 'Token token=ac5c4bd558f2bf11ee974bbd12127026'
+        $httpProvider.defaults.headers.common['Authorization'] = 'Token token=' + localStorage["api_key"];
         $routeProvider
             .when('/',
                 {
@@ -64,6 +64,14 @@ var demoApp = angular.module('demoApp', ["ngResource", "ngRoute"])
                 controller: 'TagControllerConnectedEvents',
                 templateUrl: 'app/views/show_tag_events.html'
             })
+            .when('/log_in', {
+                controller: 'LogInController',
+                templateUrl: 'app/views/log_in.html'
+            })
+            .when('/log_out', {
+                controller: 'LogOutController',
+                templateUrl: 'app/views/log_out.html'
+            })
             .otherwise({ redirectTo: '/' });
     });
 
@@ -84,7 +92,7 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
         createEvent: function(eventObject){
             var event = $resource("http://localhost:3000/api/v1/events/:id", { id:"@id"});
             return event.save({
-                application_api_key: "ad0cc58e346ee42367c904f01c1f219f",
+                application_api_key: localStorage["api_key"],
                 description: eventObject.description,
                 position_id: eventObject.position_id
             }).$promise;
@@ -102,7 +110,7 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
                 event.description = eventObject.description;
                 event.position_id = eventObject.position_id;
                 event.creator_id = eventObject.creator_id;
-                event.application_api_key = "ad0cc58e346ee42367c904f01c1f219f";
+                event.application_api_key = localStorage["api_key"];
                 event.$save();
             });
         },
@@ -172,6 +180,15 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
             var Tag = $resource("http://localhost:3000/api/v1/tags/specific/?id=:tagId", { tagId:"@id"});
 
             return Tag.get({tagId:tagObjectId}).$promise;
+        },
+        authenticateCreator: function(applicationName, creatorPassword){
+            var Creator = $resource("http://localhost:3000/api/v1/events/autenticate_creator", null, {
+                post: {
+                    method:"POST"
+                }
+            });
+
+            return Creator.post({password: creatorPassword, applikation_name: applicationName}).$promise;
         }
     }
     return event_calls;
@@ -201,7 +218,7 @@ demoApp.factory("UserInteractionMessagesFactory",function(){
 
 demoApp.controller('EventController', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
     var controller = {};
-
+    localStorage["api_key"] = "";
     UIMfactory.printUserSuccessMessages();
     UIMfactory.printUserFailedMessage();
 
@@ -221,6 +238,10 @@ demoApp.controller('EventController', ["$scope", "ApiFactory", "UserInteractionM
 
 demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
+
+    if(localStorage["api_key"] == "") {
+        $location.path("log_in");
+    }
 
     getAllPositions();
 
@@ -243,6 +264,11 @@ demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", "$location"
 
 demoApp.controller('EventControllerUpdate', ["$scope", "ApiFactory","$location" , function($scope, api, $location){
     var controller = {};
+
+
+    if(localStorage["api_key"] === "") {
+        $location.path("log_in");
+    }
 
     getAllPositions();
     getSpecificEvent();
@@ -455,6 +481,27 @@ demoApp.controller('TagControllerConnectedEvents', ["$scope", "ApiFactory","$loc
         });
     };
 
+}]);
+
+demoApp.controller('LogInController', ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
+    var controller = {};
+
+    $scope.LogIn = function(){
+        api.authenticateCreator($scope.application_name, $scope.password).then(function(response){
+            localStorage["api_key"] = response.applikation_api;
+            UIMfactory.addUserSuccessMessage("Du är inloggad");
+            $location.path("/");
+        }).error(function(error){
+
+        });
+    };
+
+}]);
+
+demoApp.controller('LogOutController', ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
+    localStorage["api_key"] = "";
+    UIMfactory.successMessage = "Du loggade ut";
+    $location.path("/");
 }]);
 
 demoApp.directive("myPositionDropdown", function() {

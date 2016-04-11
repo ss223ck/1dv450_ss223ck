@@ -54,7 +54,9 @@ p "Created #{User.count} users"
   Creator.create!({
                       user_id: User.all.ids.sample,
                       applikation_name: Faker::App.name,
-                      applikation_description: Faker::Hacker.say_something_smart
+                      applikation_description: Faker::Hacker.say_something_smart,
+                      password: "test",
+                      password_confirmation: "test"
                   })
 end
 
