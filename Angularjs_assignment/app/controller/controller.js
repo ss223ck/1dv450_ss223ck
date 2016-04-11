@@ -177,27 +177,49 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
     return event_calls;
 }]);
 
-demoApp.controller('EventController', ["$scope", "ApiFactory", function($scope, api){
+demoApp.factory("UserInteractionMessagesFactory",function(){
+    var factory = {
+        printUserSuccessMessages: function(){
+            var successTag = document.getElementById("success_message");
+            successTag.innerHTML = localStorage["successMessage"]
+            localStorage["successMessage"] = "";
+        },
+        printUserFailedMessage: function(){
+            var successTag = document.getElementById("error_message");
+            successTag.innerHTML = localStorage["errorMessage"]
+            localStorage["errorMessage"] = "";
+        },
+        addUserSuccessMessage: function(message){
+            localStorage["successMessage"] = message;
+        },
+        addUserFailedMessage: function(message){
+            localStorage["errorMessage"] = message;
+        },
+    }
+    return factory;
+});
+
+demoApp.controller('EventController', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
     var controller = {};
+
+    UIMfactory.printUserSuccessMessages();
+    UIMfactory.printUserFailedMessage();
 
     getAllEvents();
 
     function getAllEvents() {
         api.getAllEvents().then(function(data){
-
             $scope.events = data.requested_events;
-
             data.requested_events.forEach(function(event){
-                functionrenderEvents(event);
-
-
+                api.getSpecificPosition(event.position_id).then(function(position){
+                    functionrenderEvents(event, position);
+                });
             })
         });
     };
-
 }]);
 
-demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", function($scope, api){
+demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
     getAllPositions();
@@ -210,9 +232,8 @@ demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", function($s
 
     $scope.CreateEvent = function(){
         api.createEvent($scope.event).then(function(results){
-            $scope.event = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your created a event";
+            UIMfactory.addUserSuccessMessage("Your created a event")
+            $location.path('/');
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
             errorTag.innerHTML = error.error;
@@ -241,10 +262,8 @@ demoApp.controller('EventControllerUpdate', ["$scope", "ApiFactory","$location" 
     };
     $scope.UpdateEvent = function(){
         api.updateEvent($scope.event).then(function(results){
-            $scope.event = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your updated a event";
-            $location.path('/')
+            UIMfactory.addUserSuccessMessage("Your updated a event")
+            $location.path('/');
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
             errorTag.innerHTML = error.error;
@@ -310,15 +329,14 @@ demoApp.controller('PositionControllerSpecific', ["$scope", "ApiFactory", "$loca
 
 }]);
 
-demoApp.controller('PositionControllerCreate', ["$scope", "ApiFactory", function($scope, api){
+demoApp.controller('PositionControllerCreate', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
     var controller = {};
 
 
     $scope.CreatePosition = function(){
         api.createPosition($scope.position).then(function(results){
-            $scope.position = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your created a position";
+            UIMfactory.addUserSuccessMessage("Your created a position")
+            $location.path("/");
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
             errorTag.innerHTML = error.error;
@@ -326,7 +344,7 @@ demoApp.controller('PositionControllerCreate', ["$scope", "ApiFactory", function
     };
 }]);
 
-demoApp.controller('PositionControllerUpdate', ["$scope", "ApiFactory","$location" , function($scope, api, $location){
+demoApp.controller('PositionControllerUpdate', ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
     getSpecificPosition();
@@ -342,9 +360,7 @@ demoApp.controller('PositionControllerUpdate', ["$scope", "ApiFactory","$locatio
     };
     $scope.UpdatePosition = function(){
         api.updatePosition($scope.position).then(function(results){
-            $scope.position = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your updated a position";
+            UIMfactory.addUserSuccessMessage("Your updated a position");
             $location.path('/')
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
@@ -380,15 +396,14 @@ demoApp.controller('TagControllerSpecific', ["$scope", "ApiFactory", "$location"
 
 }]);
 
-demoApp.controller('TagControllerCreate', ["$scope", "ApiFactory", function($scope, api){
+demoApp.controller('TagControllerCreate', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
     var controller = {};
 
 
     $scope.CreateTag = function(){
         api.createTags($scope.tag).then(function(results){
-            $scope.tag = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your created a tag";
+            UIMfactory.addUserSuccessMessage("You created a tag");
+            $location.path("/");
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
             errorTag.innerHTML = error.error;
@@ -396,7 +411,7 @@ demoApp.controller('TagControllerCreate', ["$scope", "ApiFactory", function($sco
     };
 }]);
 
-demoApp.controller('TagControllerUpdate', ["$scope", "ApiFactory","$location" , function($scope, api, $location){
+demoApp.controller('TagControllerUpdate', ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
     getSpecificTag();
@@ -410,9 +425,7 @@ demoApp.controller('TagControllerUpdate', ["$scope", "ApiFactory","$location" , 
     };
     $scope.UpdateTag = function(){
         api.updateTags($scope.tag).then(function(results){
-            $scope.tag = results;
-            var successTag = document.getElementById("success_message");
-            successTag.innerHTML = "Your updated a position";
+            UIMfactory.addUserSuccessMessage("You updated a tag");
             $location.path('/')
         }).error(function(error){
             var errorTag = document.getElementById("error_message");
@@ -443,3 +456,15 @@ demoApp.controller('TagControllerConnectedEvents', ["$scope", "ApiFactory","$loc
     };
 
 }]);
+
+demoApp.directive("myPositionDropdown", function() {
+    return {
+        template: '<div>' +
+                        '<select id="position" data-ng-model="event.position_id">' +
+                            '<option data-ng-repeat="position in positions" value="{{position.id}}">' +
+                                '{{position.location_name}}' +
+                            '</option>'+
+                        '</select>' +
+                    '</div>'
+    };
+});

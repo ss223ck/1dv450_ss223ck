@@ -8,15 +8,12 @@ function initMap() {
     });
 
 };
-function functionrenderEvents (event){
+function functionrenderEvents (event, position){
     infowindow = new google.maps.InfoWindow({
         content: ""
     });
-    infowindow2 = new google.maps.InfoWindow({
-        content: ""
-    });
     var marker = new google.maps.Marker({
-        position: {lat: 56.663593 , lng: 16.355325},
+        position: {lat: position.longitude , lng: position.latitude },
         map: map,
         title: "marker"
     });
@@ -27,20 +24,5 @@ function functionrenderEvents (event){
         });
         infowindow.content = "";
         infowindow.open(map, marker);
-    });
-
-    var marker2 = new google.maps.Marker({
-
-        position: {lat: 56.670302 , lng: 16.351656},
-        map: map,
-        title: "marker2"
-    });
-    marker2.addListener('click', function() {
-        infowindow2.close();
-        infowindow2 = new google.maps.InfoWindow({
-            content: "hejasdf"
-        });
-        infowindow2.content = "";
-        infowindow2.open(map, marker);
     });
 }

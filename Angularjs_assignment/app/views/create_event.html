@@ -12,16 +12,11 @@
                 <label for="position">
                     Ange position:
                 </label>
-                <div>
-                    <select id="position" data-ng-model="event.position_id">
-                        <option data-ng-repeat="position in positions" value="{{position.id}}">
-                            {{position.location_name}}
-                        </option>
-                    </select>
-                </div>
+                <div my-position-dropdown=""></div>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-default" data-ng-click="CreateEvent()" value="Skicka"/>
+                <div my-easy-test=""></div>
             </div>
         </div>
     </div>
