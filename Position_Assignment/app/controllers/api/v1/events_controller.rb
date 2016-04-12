@@ -27,7 +27,7 @@ module Api
         if creator && creator.authenticate(params[:password])
           render json: {application_api: creator.applikation_api}, status: :ok
         else
-          render json: {error: "could not authenticate"}
+          render json: {error: "Could not authenticate"}
         end
       end
       def show

@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse navHeaderCollapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Events <b class="caret"></b></a>
+                        <a href="/" class="dropdown-toggle" data-toggle="dropdown">Events <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#/">Visa alla event</a></li>
                             <li><a href="#/create_event">Skapa event</a></li>
@@ -35,33 +35,34 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Position <b class="caret"></b></a>
+                        <a href="/" class="dropdown-toggle" data-toggle="dropdown">Position <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#/show_positions">Visa positioner</a></li>
                             <li><a href="#/create_position">Skapa position</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#/" class="dropdown-toggle" data-toggle="dropdown">Tags <b class="caret"></b></a>
+                        <a href="/" class="dropdown-toggle" data-toggle="dropdown">Tags <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#/show_tags">Visa tags</a></li>
                             <li><a href="#/create_tag">Skapa tag</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#/log_out.html">Logga ut</a>
+                        <a href="#/log_out">Logga ut</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <div>
-        <p id="error_message"></p>
+    <div class="container">
+
+        <label id="error_message"></label>
     </div>
-    <di>
-        <p id="success_message"></p>
-    </di>
+    <div class="container">
+        <label id="success_message"></label>
+    </div>
 
     <div data-ng-view=""></div>
 

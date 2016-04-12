@@ -34,7 +34,7 @@ var demoApp = angular.module('demoApp', ["ngResource", "ngRoute"])
             })
             .when('/show_specific_position', {
                 controller: 'PositionControllerSpecific',
-                templateUrl: 'app/views/show_specific_positions.html'
+                templateUrl: 'app/views/show_specific_position.html'
             })
             .when('/create_position', {
                 controller: 'PositionControllerCreate',
@@ -173,7 +173,7 @@ demoApp.factory('ApiFactory', ["$resource", function($resource){
             });
             Tag.get({tagId:tagObject.id}, function(tag){
                 tag.name = tagObject.name;
-                tag.$save();
+                tag.$save({});
             });
         },
         showTagEvents: function(tagObjectId){
@@ -218,7 +218,7 @@ demoApp.factory("UserInteractionMessagesFactory",function(){
 
 demoApp.controller('EventController', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
     var controller = {};
-    localStorage["api_key"] = "";
+
     UIMfactory.printUserSuccessMessages();
     UIMfactory.printUserFailedMessage();
 
@@ -355,7 +355,7 @@ demoApp.controller('PositionControllerSpecific', ["$scope", "ApiFactory", "$loca
 
 }]);
 
-demoApp.controller('PositionControllerCreate', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
+demoApp.controller('PositionControllerCreate', ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
 
@@ -377,11 +377,11 @@ demoApp.controller('PositionControllerUpdate', ["$scope", "ApiFactory","$locatio
 
     function getSpecificPosition(){
         var urlParameters = $location.search();
-        api.getSpecificLocation(urlParameters.id).then(function(data){
-            $scope.location_name = data.location_name;
-            $scope.longitude = data.longitude;
-            $scope.latitude= data.latitude;
-            $scope.id = urlParameters.id;
+        api.getSpecificPosition(urlParameters.id).then(function(data){
+            $scope.position.location_name = data.location_name;
+            $scope.position.longitude = data.longitude;
+            $scope.position.latitude= data.latitude;
+            $scope.position.id = urlParameters.id;
         });
     };
     $scope.UpdatePosition = function(){
@@ -422,7 +422,7 @@ demoApp.controller('TagControllerSpecific', ["$scope", "ApiFactory", "$location"
 
 }]);
 
-demoApp.controller('TagControllerCreate', ["$scope", "ApiFactory", "UserInteractionMessagesFactory", function($scope, api, UIMfactory){
+demoApp.controller('TagControllerCreate', ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
 
@@ -445,8 +445,8 @@ demoApp.controller('TagControllerUpdate', ["$scope", "ApiFactory","$location", "
     function getSpecificTag(){
         var urlParameters = $location.search();
         api.getSpecificTags(urlParameters.id).then(function(data){
-            $scope.name = data.name;
-            $scope.id = urlParameters.id;
+            $scope.tag.name = data.name;
+            $scope.tag.id = urlParameters.id;
         });
     };
     $scope.UpdateTag = function(){
@@ -488,9 +488,18 @@ demoApp.controller('LogInController', ["$scope", "ApiFactory","$location", "User
 
     $scope.LogIn = function(){
         api.authenticateCreator($scope.application_name, $scope.password).then(function(response){
-            localStorage["api_key"] = response.applikation_api;
-            UIMfactory.addUserSuccessMessage("Du är inloggad");
-            $location.path("/");
+            if(response.error)
+            {
+                var errorTag = document.getElementById("error_message");
+                errorTag.innerHTML = response.error;
+            }
+            else
+            {
+                localStorage["api_key"] = response.application_api;
+                UIMfactory.addUserSuccessMessage("Du är inloggad");
+                $location.path("/");
+            }
+
         }).error(function(error){
 
         });
