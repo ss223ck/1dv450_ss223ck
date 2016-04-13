@@ -1,10 +1,12 @@
 == README
 
-1. Gå till applikationsroten i konsolen. Skriv rake db:migrate
-2. Skriv rake db:seed
-3. Starta applikationen. Skriv rails s
-4. Testa systemet genom att lägga till användare och applikationer.
-5. För att få administratörsrättigheter måste du gå in i databasen och ange is_admin till true under tabellen Users.
-6. När man är admin listas alla applikationer när man är inloggad och är under "http://localhost:3000/creators"
+1. Gå till applikationsroten i konsolen. 
+2. Skriv bundle install
+3. Skriv rake db:migrate
+4. Skriv rake db:seed
+5. Starta applikationen. Skriv rails s
+6. Testa systemet genom att lägga till användare och applikationer.
+7. För att få administratörsrättigheter måste du gå in i databasen och ange is_admin till true under tabellen Users.
+8. När man är admin listas alla applikationer när man är inloggad och är under "http://localhost:3000/creators"
 
 API:et kräver en giltig api-nyckel för alla create, update och destroy funktioner. I postmanfilen se till att ändra api-nyckeln till en giltig nyckel. 
