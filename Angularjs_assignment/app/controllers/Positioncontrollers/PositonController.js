@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('PositionController', PositionController);
 
-PositionController.$inject = ["$scope", "ApiFactory"];
+PositionController.$inject = ["$scope", "ApiPositionFactory"];
 
 function PositionController($scope, api){
     var controller = {};

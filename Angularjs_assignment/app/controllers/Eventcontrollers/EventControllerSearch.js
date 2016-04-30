@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('EventControllerSearch', EventControllerSearch);
 
-EventControllerSearch.$inject = ["$scope", "ApiFactory", "$location"];
+EventControllerSearch.$inject = ["$scope", "ApiEventFactory", "$location"];
 
 function EventControllerSearch($scope, api, $location){
     var controller = {};

@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('TagController', TagController);
 
-TagController.$inject = ["$scope", "ApiFactory"];
+TagController.$inject = ["$scope", "ApiTagFactory"];
 
 function TagController($scope, api){
     var controller = {};

@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('TagControllerSpecific', TagControllerSpecific);
 
-TagControllerSpecific.$inject = ["$scope", "ApiFactory", "$location"];
+TagControllerSpecific.$inject = ["$scope", "ApiTagFactory", "$location"];
 
 function TagControllerSpecific($scope, api, $location){
     var controller = {};

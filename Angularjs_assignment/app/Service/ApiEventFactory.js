@@ -23,6 +23,7 @@ function ApiEventFactory($resource) {
             }).$promise;
         },
         updateEvent: function (eventObject) {
+            var positionObject = JSON.parse(eventObject.position);
             var Event = $resource("http://localhost:3000/api/v1/events/:eventId", {eventId: "@id"}, {
                 get: {
                     method: "GET"
@@ -31,13 +32,16 @@ function ApiEventFactory($resource) {
                     method: "PUT"
                 }
             });
-            Event.get({eventId: eventObject.id}, function (event) {
-                event.description = eventObject.description;
-                event.position_id = eventObject.position_id;
-                event.creator_id = eventObject.creator_id;
-                event.application_api_key = localStorage["api_key"];
-                event.$save();
-            });
+            return Event.save({eventId: eventObject.id}, {
+                description: eventObject.description,
+                position: {
+                    location_name: positionObject.position_name,
+                    longitude: positionObject.longitude,
+                    latitude: positionObject.latitude
+                },
+                creator_id: eventObject.creator_id,
+                application_api_key: localStorage["api_key"]
+            }).$promise;
         }
     }
     return event_calls;

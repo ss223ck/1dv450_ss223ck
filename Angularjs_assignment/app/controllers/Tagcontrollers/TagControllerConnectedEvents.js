@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('TagControllerConnectedEvents', TagControllerConnectedEvents);
 
-TagControllerConnectedEvents.$inject = ["$scope", "ApiFactory","$location"];
+TagControllerConnectedEvents.$inject = ["$scope", "ApiTagFactory","$location"];
 
 function TagControllerConnectedEvents($scope, api, $location){
     var controller = {};

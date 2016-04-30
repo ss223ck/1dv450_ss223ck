@@ -1,7 +1,7 @@
 angular.module('demoapp').controller('EventControllerCreate', EventControllerCreate);
-EventControllerCreate.$inject = ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory"];
+EventControllerCreate.$inject = ["$scope", "ApiEventFactory", "ApiPositionFactory", "$location", "UserInteractionMessagesFactory"];
 
-function EventControllerCreate($scope, api, $location, UIMfactory){
+function EventControllerCreate($scope, apiEvent, apiPosition, $location, UIMfactory){
     var controller = {};
 
     if(localStorage["api_key"] === "") {
@@ -11,13 +11,13 @@ function EventControllerCreate($scope, api, $location, UIMfactory){
     getAllPositions();
 
     function getAllPositions() {
-        api.getAllPositions().then(function(data){
+        apiPosition.getAllPositions().then(function(data){
             $scope.positions = data.requested_position;
         });
     };
 
     $scope.CreateEvent = function(){
-        api.createEvent($scope.event).then(function(results){
+        apiEvent.createEvent($scope.event).then(function(results){
             UIMfactory.addUserSuccessMessage("Your created a event")
             $location.path('/');
         }).error(function(error){

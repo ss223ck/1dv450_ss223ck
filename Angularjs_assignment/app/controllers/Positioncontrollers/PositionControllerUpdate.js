@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('PositionControllerUpdate', PositionControllerUpdate);
 
-PositionControllerUpdate.$inject = ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory"];
+PositionControllerUpdate.$inject = ["$scope", "ApiPositionFactory","$location", "UserInteractionMessagesFactory"];
 
 function PositionControllerUpdate($scope, api, $location, UIMfactory){
     var controller = {};

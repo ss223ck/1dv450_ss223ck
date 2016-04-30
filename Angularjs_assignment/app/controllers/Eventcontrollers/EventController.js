@@ -1,7 +1,7 @@
 angular.module('demoapp').controller("EventController", EventController);
-EventController.$inject = ["$scope", "ApiEventFactory", "UserInteractionMessagesFactory"]
+EventController.$inject = ["$scope", "ApiEventFactory", "ApiPositionFactory", "UserInteractionMessagesFactory"]
 
-function EventController($scope, api, UIMfactory){
+function EventController($scope, apiEvent, apiPosition, UIMfactory){
     var controller = {};
 
     UIMfactory.printUserSuccessMessages();
@@ -10,10 +10,10 @@ function EventController($scope, api, UIMfactory){
     getAllEvents();
 
     function getAllEvents() {
-        api.getAllEvents().then(function(data){
+        apiEvent.getAllEvents().then(function(data){
             $scope.events = data.requested_events;
             data.requested_events.forEach(function(event){
-                api.getSpecificPosition(event.position_id).then(function(position){
+                apiPosition.getSpecificPosition(event.position_id).then(function(position){
                     functionrenderEvents(event, position);
                 });
             })

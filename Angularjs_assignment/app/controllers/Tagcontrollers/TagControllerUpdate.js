@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('TagControllerUpdate', TagControllerUpdate);
 
-TagControllerUpdate.$inject = ["$scope", "ApiFactory","$location", "UserInteractionMessagesFactory"];
+TagControllerUpdate.$inject = ["$scope", "ApiTagFactory","$location", "UserInteractionMessagesFactory"];
 
 function TagControllerUpdate($scope, api, $location, UIMfactory){
     var controller = {};

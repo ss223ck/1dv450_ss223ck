@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('TagControllerCreate', TagControllerCreate);
 
-TagControllerCreate.$inject = ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory"];
+TagControllerCreate.$inject = ["$scope", "ApiTagFactory", "$location", "UserInteractionMessagesFactory"];
 
 function TagControllerCreate($scope, api, $location, UIMfactory){
     var controller = {};

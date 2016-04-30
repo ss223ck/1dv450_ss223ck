@@ -28,13 +28,12 @@ function ApiPositionFactory($resource) {
                     method: "PUT"
                 }
             });
-            Position.get({positionId:positionObject.id}, function(position){
-                position.location_name = positionObject.location_name;
-                position.longitude = positionObject.longitude;
-                position.latitude = positionObject.latitude;
-                position.$save();
-            });
+            return Position.save({positionId:positionObject.id}, {
+                location_name: positionObject.location_name,
+                longitude: positionObject.longitude,
+                latitude: positionObject.latitude
+            }).$promise;
         }
-    }
+    };
     return event_calls;
 };

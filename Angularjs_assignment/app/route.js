@@ -72,5 +72,5 @@ var demoapp = angular.module('demoapp', ["ngResource", "ngRoute"])
                 controller: 'LogOutController',
                 templateUrl: 'app/views/log_out.html'
             })
-            .otherwise({ redirectTo: '/' });
+            ;
     });

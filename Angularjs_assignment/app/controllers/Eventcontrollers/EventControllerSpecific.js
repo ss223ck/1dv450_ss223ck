@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('EventControllerSpecific', EventControllerSpecific);
 
-EventControllerSpecific.$inject = ["$scope", "ApiFactory", "$location"];
+EventControllerSpecific.$inject = ["$scope", "ApiEventFactory", "$location"];
 
 function EventControllerSpecific($scope, api, $location){
     var controller = {};

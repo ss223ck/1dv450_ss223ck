@@ -26,10 +26,9 @@ function ApiTagFactory($resource) {
                     method: "PUT"
                 }
             });
-            Tag.get({tagId:tagObject.id}, function(tag){
-                tag.name = tagObject.name;
-                tag.$save({});
-            });
+            return Tag.save({tagId:tagObject.id}, {
+                name: tagObject.name
+            }).$promise;
         },
         showTagEvents: function(tagObjectId){
             var Tag = $resource("http://localhost:3000/api/v1/tags/specific/?id=:tagId", { tagId:"@id"});

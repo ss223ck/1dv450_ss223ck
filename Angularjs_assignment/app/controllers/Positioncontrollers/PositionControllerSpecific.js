@@ -1,6 +1,6 @@
 angular.module('demoapp').controller('PositionControllerSpecific', PositionControllerSpecific);
 
-PositionControllerSpecific.$inject = ["$scope", "ApiFactory", "$location"];
+PositionControllerSpecific.$inject = ["$scope", "ApiPositionFactory", "$location"];
 
 function PositionControllerSpecific($scope, api, $location){
     var controller = {};

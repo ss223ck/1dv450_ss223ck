@@ -9,8 +9,8 @@
         <div class="form-group">
             <label for="position">Ange position:</label>
             <div>
-                <select id="position" data-ng-model="event.position_id">
-                    <option data-ng-repeat="position in positions" value="{{position.id}}">
+                <select id="position" data-ng-model="event.position">
+                    <option data-ng-repeat="position in positions" value="{{position}}">
                         {{position.location_name}}
                     </option>
                 </select>
