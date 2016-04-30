@@ -239,7 +239,7 @@ demoApp.controller('EventController', ["$scope", "ApiFactory", "UserInteractionM
 demoApp.controller('EventControllerCreate', ["$scope", "ApiFactory", "$location", "UserInteractionMessagesFactory", function($scope, api, $location, UIMfactory){
     var controller = {};
 
-    if(localStorage["api_key"] == "") {
+    if(localStorage["api_key"] === "") {
         $location.path("log_in");
     }
 

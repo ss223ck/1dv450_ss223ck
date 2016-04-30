@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="EventController as event">
     <ul>
         <li data-ng-repeat="event in events">
             {{event.description}}
@@ -6,4 +6,5 @@
             <a href="#/show_specific_position?id={{event.id}}">Visa detaljer</a>
         </li>
     </ul>
+    <script src="app/controllers/Eventcontrollers/EventController.js"></script>
 </div>

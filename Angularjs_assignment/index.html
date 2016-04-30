@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="demoApp">
+<html data-ng-app="demoapp">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -9,7 +9,6 @@
     <script src="Scripts/angular-resource.js"></script>
     <script src="Scripts/jquery.min.js"></script>
 
-    <script src="app/controller/controller.js"></script>
     <LINK href="style/bootstrap.css" rel="stylesheet" type="text/css">
     <LINK href="style/stylesheet.css" rel="stylesheet" type="text/css">
 </head>
@@ -30,7 +29,7 @@
                         <a href="/" class="dropdown-toggle" data-toggle="dropdown">Events <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#/">Visa alla event</a></li>
-                            <li><a href="#/create_event">Skapa event</a></li>
+                            <li><a href="/create_event">Skapa event</a></li>
                             <li><a href="#/search_for_events">Sök efter event</a></li>
                         </ul>
                     </li>
@@ -68,9 +67,35 @@
 
 
     <script src="Scripts/angular-resource.js"></script>
-    <script src="app/controller/controller.js"></script>
     <script src="scripts/bootstrap.js"></script>
     <div id="map"></div>
+    <script src="app/route.js"></script>
+
+    <div>
+        <script src="app/controllers/Authentication/LogInController.js"></script>
+        <script src="app/controllers/Authentication/LogOutController.js"></script>
+        <script src="app/controllers/Eventcontrollers/EventController.js"></script>
+        <script src="app/controllers/Eventcontrollers/EventControllerCreate.js"></script>
+        <script src="app/controllers/Eventcontrollers/EventControllerSearch.js"></script>
+        <script src="app/controllers/Eventcontrollers/EventControllerSpecific.js"></script>
+        <script src="app/controllers/Eventcontrollers/EventControllerUpdate.js"></script>
+        <script src="app/controllers/Positioncontrollers/PositionControllerCreate.js"></script>
+        <script src="app/controllers/Positioncontrollers/PositionControllerSpecific.js"></script>
+        <script src="app/controllers/Positioncontrollers/PositionControllerUpdate.js"></script>
+        <script src="app/controllers/Positioncontrollers/PositonController.js"></script>
+        <script src="app/controllers/Tagcontrollers/TagController.js"></script>
+        <script src="app/controllers/Tagcontrollers/TagControllerConnectedEvents.js"></script>
+        <script src="app/controllers/Tagcontrollers/TagControllerCreate.js"></script>
+        <script src="app/controllers/Tagcontrollers/TagControllerSpecific.js"></script>
+        <script src="app/controllers/Tagcontrollers/TagControllerUpdate.js"></script>
+
+        <script src="app/Service/ApiAuthenticateFactory.js"></script>
+        <script src="app/Service/ApiEventFactory.js"></script>
+        <script src="app/Service/ApiPositionFactory.js"></script>
+        <script src="app/Service/ApiTagFactory.js"></script>
+        <script src="app/Service/UserInteractionFactory.js"></script>
+    </div>
+
 
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAez0UBVTT-gu5oNjpUmDK42WxmwOpV7xk&callback=initMap">
