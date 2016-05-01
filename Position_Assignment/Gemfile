@@ -36,3 +36,5 @@ gem "json"
 gem "kaminari"
 
 gem 'rack-cors', :require => 'rack/cors'
+
+gem "rake", "11.1.2"

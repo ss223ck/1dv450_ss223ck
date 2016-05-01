@@ -63,3 +63,37 @@ end
 p "Created #{Creator.count} api keys"
 
 p "Seed created in #{Time.now - start} seconds"
+
+Position.create!({
+    location_name: "Linneuniversitetet",
+    longitude: "56.67788",
+    latitude: "16.357818"
+                 })
+Position.create!({
+   location_name: "Kalmar",
+   longitude: "56.6656568",
+   latitude: "16.3528855"
+                 })
+Tag.create!({
+    name: "Skola"
+            })
+Tag.create!({
+    name: "Universitet"
+            })
+Tag.create!({
+    name: "Fest"
+            })
+
+@event = Event.create!({
+    position_id: 1,
+    creator_id: 2,
+    description: "Föreläsning"
+              })
+@event.tags << Tag.find_by(id: 1)
+@event.tags << Tag.find_by(id: 2)
+@event2 = Event.create!({
+                  position_id: 1,
+                  creator_id: 2,
+                  description: "Fest i kalmar stad"
+              })
+@event.tags << Tag.find_by(id: 3)

@@ -28,11 +28,16 @@ function ApiPositionFactory($resource) {
                     method: "PUT"
                 }
             });
-            return Position.save({positionId:positionObject.id}, {
+            return Position.save({positionId: positionObject.id}, {
                 location_name: positionObject.location_name,
                 longitude: positionObject.longitude,
                 latitude: positionObject.latitude
             }).$promise;
+        },
+        deletePosition: function (id) {
+            var Position = $resource("http://localhost:3000/api/v1/positions/:positionId", {positionId: "@id"});
+
+            return Position.delete({positionId: id}).$promise;
         }
     };
     return event_calls;

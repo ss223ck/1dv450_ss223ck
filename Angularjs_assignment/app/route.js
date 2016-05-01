@@ -28,6 +28,11 @@ var demoapp = angular.module('demoapp', ["ngResource", "ngRoute"])
                     controller: 'EventControllerCreate',
                     templateUrl: 'app/views/create_event.html'
                 })
+            .when('/delete_event',
+                {
+                    controller: 'EventControllerDelete',
+                    templateUrl: 'app/views/delete_event.html'
+                })
             .when('/show_positions', {
                 controller: 'PositionController',
                 templateUrl: 'app/views/show_positions.html'
@@ -44,6 +49,11 @@ var demoapp = angular.module('demoapp', ["ngResource", "ngRoute"])
                 controller: 'PositionControllerUpdate',
                 templateUrl: 'app/views/update_position.html'
             })
+            .when('/delete_position',
+                {
+                    controller: 'PositionControllerDelete',
+                    templateUrl: 'app/views/delete_position.html'
+                })
             .when('/show_tags', {
                 controller: 'TagController',
                 templateUrl: 'app/views/show_tags.html'
@@ -63,6 +73,10 @@ var demoapp = angular.module('demoapp', ["ngResource", "ngRoute"])
             .when('/show_tag_events', {
                 controller: 'TagControllerConnectedEvents',
                 templateUrl: 'app/views/show_tag_events.html'
+            })
+            .when('/delete_tag', {
+                controller: 'TagControllerDelete',
+                templateUrl: 'app/views/delete_tag.html'
             })
             .when('/log_in', {
                 controller: 'LogInController',

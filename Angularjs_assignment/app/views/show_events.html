@@ -1,9 +1,10 @@
-<div ng-controller="EventController as event">
+<div>
     <ul>
         <li data-ng-repeat="event in events">
             {{event.description}}
             <a href="#/update_event?id={{event.id}}">Updatera eventet</a>
             <a href="#/show_specific_event?id={{event.id}}">Visa detaljer</a>
+            <a href="#/delete_event?id={{event.id}}">Ta bort event</a>
         </li>
     </ul>
 </div>

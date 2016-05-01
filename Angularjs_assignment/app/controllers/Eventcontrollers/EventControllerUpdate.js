@@ -3,8 +3,6 @@ angular.module('demoapp').controller('EventControllerUpdate', EventControllerUpd
 EventControllerUpdate.$inject = ["$scope", "ApiEventFactory", "ApiPositionFactory", "$location", "UserInteractionMessagesFactory"]
 
 function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfactory){
-    var controller = {};
-
 
     if(localStorage["api_key"] === "") {
         $location.path("log_in");

@@ -18,7 +18,7 @@ function ApiTagFactory($resource) {
             }).$promise;
         },
         updateTags: function(tagObject){
-            var Tag = $resource("http://localhost:3000/api/v1/tags/:eventId", { tagId:"@id"}, {
+            var Tag = $resource("http://localhost:3000/api/v1/tags/:tagId", { tagId:"@id"}, {
                 get: {
                     method: "GET"
                 },
@@ -26,7 +26,7 @@ function ApiTagFactory($resource) {
                     method: "PUT"
                 }
             });
-            return Tag.save({tagId:tagObject.id}, {
+            return Tag.save({tagId: tagObject.id}, {
                 name: tagObject.name
             }).$promise;
         },
@@ -34,7 +34,12 @@ function ApiTagFactory($resource) {
             var Tag = $resource("http://localhost:3000/api/v1/tags/specific/?id=:tagId", { tagId:"@id"});
 
             return Tag.get({tagId:tagObjectId}).$promise;
+        },
+        deleteTag: function (id) {
+            var Tag = $resource("http://localhost:3000/api/v1/tags/:tagId", {tagId: "@id"});
+            
+            return Tag.delete({tagId: id}).$promise;
         }
-    }
+    };
     return event_calls;
 };

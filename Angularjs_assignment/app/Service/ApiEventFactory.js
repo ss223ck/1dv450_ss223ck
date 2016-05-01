@@ -42,7 +42,15 @@ function ApiEventFactory($resource) {
                 creator_id: eventObject.creator_id,
                 application_api_key: localStorage["api_key"]
             }).$promise;
+        },
+        deleteEvent: function (id) {
+            var Event = $resource("http://localhost:3000/api/v1/events/:eventId", {eventId: "@id"});
+            Event.get({eventId: id}, function(){
+                Event.delete({eventId: id,
+                    application_api_key: localStorage["api_key"]
+                });
+            });
         }
-    }
+    };
     return event_calls;
 };
