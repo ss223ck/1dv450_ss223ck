@@ -4,6 +4,8 @@ Gå till applikationsroten för rails i konsolen.
 
 Skriv bundle install
 
+Möjligtvis behöver man köra bundle update om konsolen klagar på fel version av "rake"
+
 Skriv rake db:migrate
 
 Skriv rake db:seed
