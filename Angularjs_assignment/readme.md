@@ -19,4 +19,4 @@ När man ska skapa, uppdater eller ta bort event, taggar eller positioner måste
 
 Är du inte inloggad och försöker navigera till en funktion för att skapa, uppdater eller ta bort kommer du omdirigeras till en inloggningssida. 
 
-Inloggningsuppgifter hittar du i databasen under tabellen creators. Användarnamnet som ska anges hittar du under applikation_name-tabellen och lösenordet för dom automatgenererade "creators" är "test". 
+Inloggningsuppgifter hittar du i databasen under tabellen creators. Användarnamnet som ska anges hittar du under applikation_name-tabellen och är case sensitive. Lösenordet för dom automatgenererade "creators" är "test". 
