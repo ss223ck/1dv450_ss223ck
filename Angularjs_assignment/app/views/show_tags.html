@@ -1,11 +1,14 @@
-<div>
-    <ul>
-        <li data-ng-repeat="tag in tags">
-            {{tag.name}}
-            <a href="#/update_tag?id={{tag.id}}">Updatera taggen</a>
-            <a href="#/show_specific_tag?id={{tag.id}}">Visa detaljer</a>
-            <a href="#/show_tag_events?id={{tag.id}}">Visa events kopplade till taggen</a>
-            <a href="#/delete_tag?id={{tag.id}}">Ta bort taggen</a>
-        </li>
-    </ul>
+<div class="event-container">
+    <h2>Nedan visas taggar</h2>
+    <div class="event-list-container">
+        <ul>
+            <li data-ng-repeat="tag in tags">
+                {{tag.name}}<br>
+                <a href="#/update_tag?id={{tag.id}}">Updatera taggen</a><br>
+                <a href="#/show_specific_tag?id={{tag.id}}">Visa detaljer</a><br>
+                <a href="#/show_tag_events?id={{tag.id}}">Visa events kopplade till taggen</a><br>
+                <a href="#/delete_tag?id={{tag.id}}">Ta bort taggen</a><br>
+            </li>
+        </ul>
+    </div>
 </div>

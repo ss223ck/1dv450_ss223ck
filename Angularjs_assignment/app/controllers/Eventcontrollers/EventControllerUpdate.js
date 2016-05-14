@@ -1,8 +1,8 @@
 angular.module('demoapp').controller('EventControllerUpdate', EventControllerUpdate);
 
-EventControllerUpdate.$inject = ["$scope", "ApiEventFactory", "ApiPositionFactory", "$location", "UserInteractionMessagesFactory"]
+EventControllerUpdate.$inject = ["$scope", "ApiEventFactory", "ApiPositionFactory", "$location", "UserInteractionMessagesFactory", "ApiTagFactory"]
 
-function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfactory){
+function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfactory, apiTag){
 
     if(localStorage["api_key"] === "") {
         $location.path("log_in");
@@ -10,7 +10,7 @@ function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfact
 
     getAllPositions();
     getSpecificEvent();
-
+    getAllTags();
     function getAllPositions() {
         apiPosition.getAllPositions().then(function(data){
             $scope.positions = data.requested_position;
@@ -24,6 +24,12 @@ function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfact
             $scope.event.id = urlParameters.id;
         });
     };
+    function getAllTags() {
+        apiTag.getAllTags().then(function(data){
+            $scope.tags = data.requested_tags;
+        });
+    };
+
     $scope.UpdateEvent = function(){
         apiEvent.updateEvent($scope.event).then(function(results){
             UIMfactory.addUserSuccessMessage("Your updated a event")

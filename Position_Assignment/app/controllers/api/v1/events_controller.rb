@@ -48,11 +48,13 @@ module Api
       end
       def show_nearby_events
         if params[:location_name].present?
+          userPosition = Position.find_by_location_name(params[:location_name])
+
           @nearby_events = []
-          @nearby_positions = Position.near(params[:location_name], 20)
+          @nearby_positions = Position.near([userPosition.latitude, userPosition.longitude], 20)
           @nearby_positions.each do |position|
             if Event.find_by_position_id(position.id).present?
-              @nearby_events.push(Event.find_by_position_id(position.id))
+              @nearby_events.push(Event.where(:position_id => position.id))
             end
 
           end

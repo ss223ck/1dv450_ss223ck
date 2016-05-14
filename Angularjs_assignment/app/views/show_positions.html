@@ -1,10 +1,13 @@
-<div>
-    <ul>
-        <li data-ng-repeat="position in positions">
-            {{position.location_name}}
-            <a href="#/update_position?id={{position.id}}">Updatera positionen</a>
-            <a href="#/show_specific_position?id={{position.id}}">Visa detaljer</a>
-            <a href="#/delete_position?id={{position.id}}">Ta bort positionen</a>
-        </li>
-    </ul>
+<div class="event-container">
+    <h2>Nedan visas positioner!</h2>
+    <div class="event-list-container">
+        <ul>
+            <li data-ng-repeat="position in positions">
+                {{position.location_name}}<br>
+                <a href="#/update_position?id={{position.id}}">Updatera positionen</a><br>
+                <a href="#/show_specific_position?id={{position.id}}">Visa detaljer</a><br>
+                <a href="#/delete_position?id={{position.id}}">Ta bort positionen</a><br>
+            </li>
+        </ul>
+    </div>
 </div>

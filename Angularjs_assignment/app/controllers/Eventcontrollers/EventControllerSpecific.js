@@ -1,8 +1,8 @@
 angular.module('demoapp').controller('EventControllerSpecific', EventControllerSpecific);
 
-EventControllerSpecific.$inject = ["$scope", "ApiEventFactory", "$location"];
+EventControllerSpecific.$inject = ["$scope", "ApiEventFactory", "$location", "ApiPositionFactory"];
 
-function EventControllerSpecific($scope, api, $location){
+function EventControllerSpecific($scope, api, $location, apiPosition){
     var controller = {};
 
     getSpecificEvent();
@@ -13,6 +13,11 @@ function EventControllerSpecific($scope, api, $location){
             $scope.description = data.description;
             $scope.creator_id = data.creator_id;
             $scope.id = urlParameters.id;
+            apiPosition.getSpecificPosition(data.position_id).then(function(positionResponse){
+                $scope.location_name = positionResponse.location_name;
+                $scope.latitude = positionResponse.latitude;
+                $scope.longitude = positionResponse.longitude;
+            });
         });
     };
 };

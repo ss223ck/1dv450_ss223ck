@@ -13,12 +13,12 @@
 
 
 
-    <div>
+    <div class="event-container">
         <ul>
             <li data-ng-repeat="event in events">
-                {{event.description}}
-                <a href="#/update_position?id={{event.id}}">Updatera eventet</a>
-                <a href="#/show_specific_position?id={{event.id}}">Visa detaljer</a>
+                {{event.description}}<br>
+                <a href="#/update_position?id={{event.id}}">Updatera eventet</a><br>
+                <a href="#/show_specific_position?id={{event.id}}">Visa detaljer</a><br>
             </li>
         </ul>
     </div>
