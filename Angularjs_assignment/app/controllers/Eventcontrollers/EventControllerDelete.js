@@ -9,10 +9,10 @@ function EventControllerDelete($scope, $location, apiEvent, UIMfactory){
     }
     var urlParameters = $location.search();
     apiEvent.deleteEvent(urlParameters.id).then(function(response){
-        UIMfactory.successMessage("You deleted the event");
-        location.path("/");
+        UIMfactory.addUserSuccessMessage("You deleted the event");
+        $location.path("/");
     }).error(function(error){
-        UIMfactory.errorMessage("You didn't delete the event");
-        location.path("/");
+        UIMfactory.addUserFailedMessage("You didn't delete the event");
+        $location.path("/");
     });
 };

@@ -5,5 +5,6 @@ LogOutController.$inject = ["$scope", "ApiAuthenticateFactory","$location", "Use
 function LogOutController($scope, api, $location, UIMfactory){
     localStorage["api_key"] = "";
     UIMfactory.successMessage = "Du loggade ut";
+    Authentication.init();
     $location.path("/");
 };

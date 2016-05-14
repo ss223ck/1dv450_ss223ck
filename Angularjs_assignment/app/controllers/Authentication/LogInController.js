@@ -16,6 +16,7 @@ function LogInController($scope, api, $location, UIMfactory){
             {
                 localStorage["api_key"] = response.application_api;
                 UIMfactory.addUserSuccessMessage("Du är inloggad");
+                Authentication.init();
                 $location.path("/");
             }
 

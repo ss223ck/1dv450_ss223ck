@@ -9,10 +9,10 @@ function TagControllerDelete($scope, $location, apiTag, UIMfactory){
     }
     var urlParameters = $location.search();
     apiTag.deleteTag(urlParameters.id).then(function(response){
-        UIMfactory.successMessage("You deleted the tag");
-        location.path("/");
+        UIMfactory.addUserSuccessMessage("You deleted the tag");
+        $location.path("/show_tags");
     }).error(function(error){
-        UIMfactory.errorMessage("You didn't delete the tag");
-        location.path("/");
+        UIMfactory.addUserFailedMessage("You didn't delete the tag");
+        $location.path("/");
     });
 };

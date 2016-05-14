@@ -1,10 +1,10 @@
 angular.module('demoapp').controller('PositionController', PositionController);
 
-PositionController.$inject = ["$scope", "ApiPositionFactory"];
+PositionController.$inject = ["$scope", "ApiPositionFactory", "UserInteractionMessagesFactory"];
 
-function PositionController($scope, api){
-    var controller = {};
-
+function PositionController($scope, api, UIMfactory){
+    UIMfactory.printUserSuccessMessages();
+    UIMfactory.printUserFailedMessage();
     getAllPositions();
 
     function getAllPositions() {

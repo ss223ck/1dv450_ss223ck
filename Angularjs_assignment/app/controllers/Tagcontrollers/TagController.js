@@ -1,9 +1,10 @@
 angular.module('demoapp').controller('TagController', TagController);
 
-TagController.$inject = ["$scope", "ApiTagFactory"];
+TagController.$inject = ["$scope", "ApiTagFactory", "UserInteractionMessagesFactory"];
 
-function TagController($scope, api){
-    var controller = {};
+function TagController($scope, api, UIMfactory){
+    UIMfactory.printUserSuccessMessages();
+    UIMfactory.printUserFailedMessage();
 
     getAllTags();
 

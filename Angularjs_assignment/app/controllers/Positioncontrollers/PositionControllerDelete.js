@@ -9,10 +9,10 @@ function PositionControllerDelete($scope, $location, apiPosition, UIMfactory){
     }
     var urlParameters = $location.search();
     apiPosition.deletePosition(urlParameters.id).then(function(response){
-        UIMfactory.successMessage("You deleted the position");
-        location.path("/");
+        UIMfactory.addUserSuccessMessage("You deleted the position");
+        $location.path("/show_positions");
     }).error(function(error){
-        UIMfactory.errorMessage("You didn't delete the position");
-        location.path("/");
+        UIMfactory.addUserFailedMessage("You didn't delete the position");
+        $location.path("/show_positions");
     });
 };
