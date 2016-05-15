@@ -1,0 +1,26 @@
+<div class="event-container">
+    <div>
+        <h3>Ange position</h3>
+        <select id="position" data-ng-model="position_id">
+            <option data-ng-repeat="position in positions" value="{{position.location_name}}">
+                {{position.location_name}}
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" data-ng-click="SearchEvent()" value="Skicka"/>
+    </div>
+</div>
+<div class="event-container">
+    <h3>Nedan visas aktuella event!</h3>
+    <div class="event-list-container">
+        <ul>
+            <li data-ng-repeat="event in events">
+                {{event.description}}<br>
+                <a href="#/update_event?id={{event.id}}">Updatera eventet</a><br>
+                <a href="#/show_specific_event?id={{event.id}}">Visa detaljer</a><br>
+                <a href="#/delete_event?id={{event.id}}">Ta bort event</a><br>
+            </li>
+        </ul>
+    </div>
+</div>

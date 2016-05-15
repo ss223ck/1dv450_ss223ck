@@ -1,8 +1,8 @@
 angular.module("demoapp").controller("EventControllerDelete", EventControllerDelete);
 
-EventControllerDelete.$inject = ["$scope", "$location", "ApiEventFactory", "UserInteractionMessagesFactory"];
+EventControllerDelete.$inject = ["$location", "ApiEventFactory", "UserInteractionMessagesFactory"];
 
-function EventControllerDelete($scope, $location, apiEvent, UIMfactory){
+function EventControllerDelete($location, apiEvent, UIMfactory){
 
     if(localStorage["api_key"] === "") {
         $location.path("log_in");
@@ -12,7 +12,7 @@ function EventControllerDelete($scope, $location, apiEvent, UIMfactory){
         UIMfactory.addUserSuccessMessage("You deleted the event");
         $location.path("/");
     }).error(function(error){
-        UIMfactory.addUserFailedMessage("You didn't delete the event");
+        UIMfactory.addUserFailedMessage("Something went wrong when deleting the event");
         $location.path("/");
     });
 };

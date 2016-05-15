@@ -17,6 +17,11 @@ var demoapp = angular.module('demoapp', ["ngResource", "ngRoute"])
                     controller: 'EventControllerSearch',
                     templateUrl: 'app/views/search_for_events.html'
                 })
+            .when('/search_for_events_near_position',
+                {
+                    controller: 'EventControllerNearPosition',
+                    templateUrl: 'app/views/search_for_events_near_position.html'
+                })
             .when('/update_event',
                 {
                     controller: 'EventControllerUpdate',

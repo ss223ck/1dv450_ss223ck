@@ -56,7 +56,6 @@ module Api
             if Event.find_by_position_id(position.id).present?
               @nearby_events.push(Event.where(:position_id => position.id))
             end
-
           end
           render json: @nearby_events, status: :ok
         else
