@@ -5,22 +5,23 @@ function EventControllerNearPosition($scope, apiEvent, apiPosition, UIMfactory, 
     UIMfactory.printUserSuccessMessages();
     UIMfactory.printUserFailedMessage();
 
-    getAllPositions();
 
+    getAllPositions();
     function getAllPositions() {
-        apiPosition.getAllPositions().then(function(data){
-            $scope.positions = data.requested_positions;
-        }).error(function(error){
+        apiPosition.getAllPositions().then(function(response){
+            //change in below line
+            $scope.positions = response.requested_position;
+        }, function(error){
             UIMfactory.addUserFailedMessage("Something went wrong, try again!");
             $location.path("/");
         });
     };
 
     $scope.SearchEvent = function(){
-        apiEvent.showNearbyEvents($scope.position_id).then(function(nearEvents){
-            $scope.events = nearEvents;
-        }).error(function(error){
-            UIMfactory.addUserFailedMessage("Something went wrong when fetching the events, try again!");
+        apiEvent.showNearbyEvents($scope.location_name).then(function(response){
+            $scope.events = response.requested_events[0];
+        }, function(error){
+            UIMfactory.addUserFailedMessage("Something went wrong, try again!");
             $location.path("/");
         });
     };

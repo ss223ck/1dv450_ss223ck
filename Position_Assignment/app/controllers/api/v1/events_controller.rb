@@ -57,7 +57,7 @@ module Api
               @nearby_events.push(Event.where(:position_id => position.id))
             end
           end
-          render json: @nearby_events, status: :ok
+          render json: { requested_events: @nearby_events}, status: :ok
         else
           render json: '{ "error": "You must send a location name" }', status: :unprocessable_entity
         end
