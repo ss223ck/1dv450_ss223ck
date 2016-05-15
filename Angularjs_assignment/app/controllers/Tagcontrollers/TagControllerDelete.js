@@ -11,8 +11,12 @@ function TagControllerDelete($scope, $location, apiTag, UIMfactory){
     apiTag.deleteTag(urlParameters.id).then(function(response){
         UIMfactory.addUserSuccessMessage("You deleted the tag");
         $location.path("/show_tags");
-    }).error(function(error){
-        UIMfactory.addUserFailedMessage("You didn't delete the tag");
+    },function(error){
+        if(error.status == 401) {
+            UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+        }else{
+            UIMfactory.addUserFailedMessage("Something went wrong when deleting the tag");
+        }
         $location.path("/");
     });
 };

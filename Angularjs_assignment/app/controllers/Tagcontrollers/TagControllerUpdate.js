@@ -3,7 +3,9 @@ angular.module('demoapp').controller('TagControllerUpdate', TagControllerUpdate)
 TagControllerUpdate.$inject = ["$scope", "ApiTagFactory","$location", "UserInteractionMessagesFactory"];
 
 function TagControllerUpdate($scope, api, $location, UIMfactory){
-    var controller = {};
+    if(localStorage["api_key"] === "") {
+        $location.path("log_in");
+    }
 
     getSpecificTag();
 
@@ -18,9 +20,13 @@ function TagControllerUpdate($scope, api, $location, UIMfactory){
         api.updateTags($scope.tag).then(function(results){
             UIMfactory.addUserSuccessMessage("You updated a tag");
             $location.path('/')
-        }).error(function(error){
-            var errorTag = document.getElementById("error_message");
-            errorTag.innerHTML = error.error;
+        },function(error){
+            if(error.status == 401) {
+                UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+            }else{
+                UIMfactory.addUserFailedMessage("Something went wrong when updating the tag");
+            }
+            $location.path("/");
         });
     };
 };

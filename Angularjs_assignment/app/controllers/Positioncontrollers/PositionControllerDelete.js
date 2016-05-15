@@ -11,8 +11,12 @@ function PositionControllerDelete($scope, $location, apiPosition, UIMfactory){
     apiPosition.deletePosition(urlParameters.id).then(function(response){
         UIMfactory.addUserSuccessMessage("You deleted the position");
         $location.path("/show_positions");
-    }).error(function(error){
-        UIMfactory.addUserFailedMessage("You didn't delete the position");
-        $location.path("/show_positions");
+    },function(error){
+        if(error.status == 401) {
+            UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+        }else{
+            UIMfactory.addUserFailedMessage("Something went wrong when deleting the position");
+        }
+        $location.path("/");
     });
 };

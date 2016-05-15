@@ -34,9 +34,13 @@ function EventControllerUpdate($scope, apiEvent, apiPosition, $location, UIMfact
         apiEvent.updateEvent($scope.event).then(function(results){
             UIMfactory.addUserSuccessMessage("Your updated a event")
             $location.path('/');
-        }).error(function(error){
-            var errorTag = document.getElementById("error_message");
-            errorTag.innerHTML = error.error;
+        },function(error){
+            if(error.status == 401) {
+                UIMfactory.addUserFailedMessage("You are not the owner of the event you tried to update");
+            }else{
+                UIMfactory.addUserFailedMessage("Something went wrong when updating the event");
+            }
+            $location.path("/");
         });
     };
 };

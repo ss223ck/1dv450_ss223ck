@@ -1,17 +1,18 @@
 angular.module("demoapp").factory('ApiPositionFactory', ApiPositionFactory);
 
-function ApiPositionFactory($resource) {
+function ApiPositionFactory($resource, $location) {
+    var path = "http://" + $location.host();
     var event_calls = {
         getAllPositions: function(){
-            var resource = $resource("http://localhost:3000/api/v1/positions/:id", { id:"@id"});
+            var resource = $resource(path + ":3000/api/v1/positions/:id", { id:"@id"});
             return resource.get().$promise;
         },
         getSpecificPosition: function(id){
-            var resource = $resource("http://localhost:3000/api/v1/positions/:id", { id:"@id"});
+            var resource = $resource(path + ":3000/api/v1/positions/:id", { id:"@id"});
             return resource.get({id: id}).$promise;
         },
         createPosition: function(position){
-            var resource = $resource("http://localhost:3000/api/v1/positions/:id", { id:"@id"});
+            var resource = $resource(path + ":3000/api/v1/positions/:id", { id:"@id"});
 
             return resource.save({
                 location_name: position.location_name,
@@ -20,7 +21,7 @@ function ApiPositionFactory($resource) {
             }).$promise;
         },
         updatePosition: function(positionObject){
-            var Position = $resource("http://localhost:3000/api/v1/positions/:positionId", { positionId:"@id"}, {
+            var Position = $resource(path + ":3000/api/v1/positions/:positionId", { positionId:"@id"}, {
                 get: {
                     method: "GET"
                 },
@@ -35,8 +36,7 @@ function ApiPositionFactory($resource) {
             }).$promise;
         },
         deletePosition: function (id) {
-            var Position = $resource("http://localhost:3000/api/v1/positions/:positionId", {positionId: "@id"});
-
+            var Position = $resource(path + ":3000/api/v1/positions/:positionId", {positionId: "@id"});
             return Position.delete({positionId: id}).$promise;
         }
     };

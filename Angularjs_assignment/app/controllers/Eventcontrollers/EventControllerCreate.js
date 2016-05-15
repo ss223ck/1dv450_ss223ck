@@ -9,16 +9,9 @@ function EventControllerCreate($scope, apiEvent, apiPosition, apiTag, $location,
     }
 
     getAllPositions();
-    getAllTags();
     function getAllPositions() {
         apiPosition.getAllPositions().then(function(data){
             $scope.positions = data.requested_position;
-        });
-    };
-
-    function getAllTags() {
-        apiTag.getAllTags().then(function(data){
-            $scope.tags = data.requested_tags;
         });
     };
 
@@ -26,9 +19,13 @@ function EventControllerCreate($scope, apiEvent, apiPosition, apiTag, $location,
         apiEvent.createEvent($scope.event).then(function(results){
             UIMfactory.addUserSuccessMessage("Your created a event")
             $location.path('/');
-        }).error(function(error){
-            var errorTag = document.getElementById("error_message");
-            errorTag.innerHTML = error.error;
+        },function(error){
+            if(error.status == 401) {
+                UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+            }else{
+                UIMfactory.addUserFailedMessage("Something went wrong when creating the event");
+            }
+            $location.path("/");
         });
     };
 };

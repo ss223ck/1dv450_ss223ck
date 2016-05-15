@@ -11,8 +11,12 @@ function EventControllerDelete($location, apiEvent, UIMfactory){
     apiEvent.deleteEvent(urlParameters.id).then(function(response){
         UIMfactory.addUserSuccessMessage("You deleted the event");
         $location.path("/");
-    }).error(function(error){
-        UIMfactory.addUserFailedMessage("Something went wrong when deleting the event");
+    },function(error){
+        if(error.status == 401) {
+            UIMfactory.addUserFailedMessage("You are not the owner of the resource you tried to delete");
+        }else{
+            UIMfactory.addUserFailedMessage("Something went wrong when deleting the event");
+        }
         $location.path("/");
     });
 };

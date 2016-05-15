@@ -13,9 +13,13 @@ function TagControllerCreate($scope, api, $location, UIMfactory){
         api.createTags($scope.tag).then(function(results){
             UIMfactory.addUserSuccessMessage("You created a tag");
             $location.path("/show_tags");
-        }).error(function(error){
-            var errorTag = document.getElementById("error_message");
-            errorTag.innerHTML = error.error;
+        },function(error){
+            if(error.status == 401) {
+                UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+            }else{
+                UIMfactory.addUserFailedMessage("Something went wrong when creating the tag");
+            }
+            $location.path("/");
         });
     };
 };

@@ -3,8 +3,9 @@ angular.module('demoapp').controller('PositionControllerUpdate', PositionControl
 PositionControllerUpdate.$inject = ["$scope", "ApiPositionFactory","$location", "UserInteractionMessagesFactory"];
 
 function PositionControllerUpdate($scope, api, $location, UIMfactory){
-    var controller = {};
-
+    if(localStorage["api_key"] === "") {
+        $location.path("log_in");
+    }
     getSpecificPosition();
 
     function getSpecificPosition(){
@@ -20,9 +21,13 @@ function PositionControllerUpdate($scope, api, $location, UIMfactory){
         api.updatePosition($scope.position).then(function(results){
             UIMfactory.addUserSuccessMessage("Your updated a position");
             $location.path('/')
-        }).error(function(error){
-            var errorTag = document.getElementById("error_message");
-            errorTag.innerHTML = error.error;
+        },function(error){
+            if(error.status == 401) {
+                UIMfactory.addUserFailedMessage("Something went wrong when authorizing your account, try to refresh the page");
+            }else{
+                UIMfactory.addUserFailedMessage("Something went wrong when updating the position");
+            }
+            $location.path("/");
         });
     };
 };
